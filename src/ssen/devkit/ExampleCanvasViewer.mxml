@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark">
+	<fx:Metadata>
+		[DefaultProperty("canvasList")]
+	</fx:Metadata>
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.IList;
+			import mx.core.IVisualElement;
+			private var _canvasList:IList;
+
+			private var canvas:IVisualElement;
+
+			[Inspectable(arrayType="mx.core.IVisualElement")]
+			[Bindable(event="canvasListChanged")]
+			public function get canvasList():IList {
+				return _canvasList;
+			}
+
+			public function set canvasList(value:IList):void {
+				_canvasList=value;
+				dispatchEvent(new Event("canvasListChanged"));
+				changeCanvas(0);
+			}
+
+			private function changeCanvas(index:int):void {
+				if (canvas !== null) {
+					removeElement(canvas);
+					canvas=null;
+				}
+
+				var item:VisualElementFactory=_canvasList.getItemAt(index) as VisualElementFactory;
+				canvas=item.newInstance();
+				addElement(canvas);
+			}
+		]]>
+	</fx:Script>
+
+	<s:layout>
+		<s:VerticalLayout paddingTop="0" paddingBottom="0" paddingLeft="0" paddingRight="0" gap="10" horizontalAlign="left"
+						  verticalAlign="top"/>
+	</s:layout>
+
+	<s:DropDownList width="100%" dataProvider="{canvasList}" change="changeCanvas(event.newIndex)"/>
+</s:Group>

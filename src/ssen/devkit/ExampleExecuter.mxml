@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark">
+	<fx:Script>
+		<![CDATA[
+			import spark.components.Label;
+			private var _exampleClass:Class;
+
+			public function get exampleClass():Class {
+				return _exampleClass;
+			}
+
+			public function set exampleClass(value:Class):void {
+				if (_exampleClass !== null) {
+					removeAllElements();
+					_exampleClass=null;
+				}
+
+				_exampleClass=value;
+				var target:Object=new value();
+				var script:XML=describeType(target);
+				var methods:XMLList=script..metadata.(@name == "Test");
+				var method:XML;
+
+				trace("ExampleExecuter.exampleClass()", script.metadata.(@name == "Example").toXMLString());
+
+				var btn:ExampleExecuterButton;
+
+				var f:int=-1;
+				var fmax:int=methods.length();
+
+				var label:Label=new Label;
+				label.text=script.@name;
+				addElement(label);
+
+				while (++f < fmax) {
+					method=methods[f].parent();
+
+					if (method.name().localName === "method") {
+						btn=new ExampleExecuterButton;
+						btn.target=target;
+						btn.method=method.@name;
+						addElement(btn);
+					}
+				}
+			}
+		]]>
+	</fx:Script>
+
+	<s:layout>
+		<s:HorizontalLayout verticalAlign="middle"/>
+	</s:layout>
+</s:Group>

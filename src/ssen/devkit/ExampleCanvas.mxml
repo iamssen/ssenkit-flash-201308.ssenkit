@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" addedToStage="init()">
+	<fx:Script>
+		<![CDATA[
+			private function init():void {
+				var script:XML=describeType(this);
+				var methods:XMLList=script..metadata.(@name == "Test");
+				var method:XML;
+
+				var btn:ExampleExecuterButton;
+
+				var f:int=-1;
+				var fmax:int=methods.length();
+
+				while (++f < fmax) {
+					method=methods[f].parent();
+
+					if (method.name().localName === "method") {
+						btn=new ExampleExecuterButton;
+						btn.target=this;
+						btn.method=method.@name;
+						executers.addElement(btn);
+					}
+				}
+			}
+
+			protected function clear():void {
+				canvas.graphics.clear();
+
+				var f:int=canvas.numChildren;
+				while (--f >= 0) {
+					canvas.removeChildAt(f);
+				}
+			}
+		]]>
+	</fx:Script>
+
+	<s:Rect left="10" right="10" top="10" bottom="50">
+		<s:stroke>
+			<s:SolidColorStroke caps="square" color="0xaaaaaa"/>
+		</s:stroke>
+		<s:fill>
+			<s:SolidColor color="0xeeeeee"/>
+		</s:fill>
+	</s:Rect>
+
+	<s:SpriteVisualElement id="canvas" x="10" y="10"/>
+
+	<s:Group id="executers" bottom="0" width="100%" height="50">
+		<s:layout>
+			<s:HorizontalLayout horizontalAlign="center" verticalAlign="middle"/>
+		</s:layout>
+	</s:Group>
+</s:Group>
