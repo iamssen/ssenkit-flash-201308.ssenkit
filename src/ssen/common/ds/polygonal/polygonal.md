@@ -4,7 +4,7 @@
 
 뚫려있는 파이프의 한 쪽면은 넣을수만 있고, 다른 한쪽면은 뺄 수만 있는 형태의 구조
 
-- [example](QueueExample.as)
+- [example](Queue__Example.as)
 - [de.polygonal.ds.Queue](http://polygonal.github.com/ds/doc/types/de/polygonal/ds/Queue.html)
 - [de.polygonal.ds.ArrayedQueue](http://polygonal.github.com/ds/doc/types/de/polygonal/ds/ArrayedQueue.html)
 - [de.polygonal.ds.LinkedQueue](http://polygonal.github.com/ds/doc/types/de/polygonal/ds/LinkedQueue.html)
@@ -17,7 +17,7 @@
 
 한 쪽이 막혀있는 파이프의 한 쪽면에 넣게 되면, 마지막에 들어간 값을 최우선으로 뺄 수 밖에 없는 형태의 구조
 
-- [example](StackExample.as)
+- [example](Stack__Example.as)
 - [de.polygonal.ds.Stack](http://polygonal.github.com/ds/doc/types/de/polygonal/ds/Stack.html)
 - [de.polygonal.ds.ArrayedStack](http://polygonal.github.com/ds/doc/types/de/polygonal/ds/ArrayedStack.html)
 - [de.polygonal.ds.LinkedStack](http://polygonal.github.com/ds/doc/types/de/polygonal/ds/LinkedStack.html)
@@ -29,7 +29,7 @@
 
 뚫려있는 파이프의 양옆으로 구슬을 집어넣고, 빼낼때도 양옆으로 마지막에 들어간 구슬을 빼낼 수 있는 형태의 구조
 
-- [example](DequeExample.as)
+- [example](Deque__Example.as)
 - [de.polygonal.ds.Deque](http://polygonal.github.com/ds/doc/types/de/polygonal/ds/Deque.html)
 - [de.polygonal.ds.ArrayedDeque](http://polygonal.github.com/ds/doc/types/de/polygonal/ds/ArrayedDeque.html)
 - [de.polygonal.ds.LinkedDeque](http://polygonal.github.com/ds/doc/types/de/polygonal/ds/LinkedDeque.html)
@@ -44,7 +44,7 @@
 
 각 항목들을 순위 매겨서 순위가 높은 것들 부터 우선적으로 내보내준다
 
-- [example](HeapExample.as)
+- [example](Heap__Example.as)
 - [de.polygonal.ds.Heap](http://polygonal.github.com/ds/doc/types/de/polygonal/ds/Heap.html)
 - [de.polygonal.ds.Heapable](http://polygonal.github.com/ds/doc/types/de/polygonal/ds/Heapable.html) > [de.polygonal.ds.Comparable](http://polygonal.github.com/ds/doc/types/de/polygonal/ds/Comparable.html)
 - `add(h:Heapable):void`
@@ -58,7 +58,7 @@ x, y 혹은 x, y, z 형태의 다차원 배열을 컨트롤 할 수 있다
 
 표준적인 x, y grid 혹은 x, y, z grid 로 써도 큰 무리가 없을듯 싶다
 
-- [example](Array2Example.as)
+- [example](Array2__Example.as)
 - [de.polygonal.ds.Array2](http://polygonal.github.com/ds/doc/types/de/polygonal/ds/Array2.html)
 - `set(x:int, y:int, v:T):void`
 - `get(x:int, y:int):T`
@@ -75,7 +75,7 @@ Dictionary 와 유사한 형태 이므로 큰 문제는 없다.
 
 당연히 Dictionary 가 더 빠르지만, `size()` 와 같이 **크기를 요구**하거나, `iterator()` 나 `toKeyArray()` 와 같은 **명확한 순서를 요구**하는 작업시에 쓸만하다
 
-- [example](MapExample.as)
+- [example](Map__Example.as)
 - [de.polygonal.ds.Map](http://polygonal.github.com/ds/doc/types/de/polygonal/ds/Map.html)
 - [de.polygonal.ds.HashMap](http://polygonal.github.com/ds/doc/types/de/polygonal/ds/HashMap.html)
 - `set(k:String, v:T):void`
@@ -87,7 +87,7 @@ Dictionary 와 유사한 형태 이므로 큰 문제는 없다.
 
 Tree 형태의 데이터를 작업하는데 꼭 필요한 수준
 
-- [example](TreeExample.as)
+- [example](Tree__Example.as)
 - [de.polygonal.ds.TreeBuilder](http://polygonal.github.com/ds/doc/types/de/polygonal/ds/TreeBuilder.html)
 - [de.polygonal.ds.TreeNode](http://polygonal.github.com/ds/doc/types/de/polygonal/ds/TreeNode.html)
 
@@ -99,7 +99,7 @@ Array 랑 기능적 면에서 큰 차이가 있지는 않다. (즉, Array 로도
 
 그리고, `insertBefore()` 나 `insertAfter()` 와 같은 **특정 위치 대비 항목 추가** 와 같은 기능이나, `shiftUp()`, `popDown()` 과 같은 **node 의 이동 기능들** 은 작업에 유용함을 준다.
 
-- [example](LinkedListExample.as)
+- [example](LinkedList__Example.as)
 - [de.polygonal.ds.SLL](http://polygonal.github.com/ds/doc/types/de/polygonal/ds/SLL.html)
 - [de.polygonal.ds.SLLNode](http://polygonal.github.com/ds/doc/types/de/polygonal/ds/SLLNode.html)
 - [de.polygonal.ds.DLL](http://polygonal.github.com/ds/doc/types/de/polygonal/ds/DLL.html)
@@ -111,7 +111,7 @@ Array 랑 기능적 면에서 큰 차이가 있지는 않다. (즉, Array 로도
 
 new 에 들어가는 비용과 gabage collection 비용을 아껴야 할 만큼 instance 가 과격하게 많이 사용되는 경우 사용할 수 있다
 
-- [example](ObjectPoolExample.as)
+- [example](ObjectPool__Example.as)
 - [de.polygonal.ds.pooling.ObjectPool](http://polygonal.github.com/ds/doc/types/de/polygonal/ds/pooling/ObjectPool.html)
 
 ## LinkedObjectPool
@@ -120,5 +120,5 @@ id 기반으로 돌려야 하는 ObjectPool 과 다르게 object 단위로 사�
 
 좀 더 편하게 쓸 수 있다
 
-- [example](LinkedObjectPoolExample.as)
+- [example](LinkedObjectPool__Example.as)
 - [de.polygonal.ds.pooling.LinkedObjectPool](http://polygonal.github.com/ds/doc/types/de/polygonal/ds/pooling/LinkedObjectPool.html)

@@ -266,6 +266,11 @@ public class MultipleKeyDataCollection implements IDisposable {
 
 		while (--f >= 0) {
 			row=table[f];
+			
+			if (row===null) {
+				continue;
+			}
+			
 			valid=true;
 
 			s=keys.length;

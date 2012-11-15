@@ -55,6 +55,15 @@ public class MathUtils {
 	public static function rad2deg(rad:Number):int {
 		return rad * 180 / Math.PI;
 	}
+
+	/** undefined, NaN 과 같은 타입 오류 가능성이 있는 숫자 정보를 기본값 으로 치환해준다 */
+	public static function nanTo(num:*, defaultValue:Number=0):int {
+		if (num === undefined || isNaN(Number(num))) {
+			return defaultValue;
+		}
+
+		return Number(num);
+	}
 }
 }
 

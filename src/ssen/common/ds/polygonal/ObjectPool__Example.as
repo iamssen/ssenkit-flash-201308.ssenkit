@@ -6,7 +6,7 @@ import de.polygonal.ds.pooling.ObjectPool;
 import flash.display.Sprite;
 import flash.utils.getTimer;
 
-public class ObjectPoolExample {
+public class ObjectPool__Example {
 
 	[Test]
 	public function compareWithNewAndObjectPool():void {

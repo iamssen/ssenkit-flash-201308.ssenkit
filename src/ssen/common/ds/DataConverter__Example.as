@@ -1,7 +1,7 @@
 /// Example
 package ssen.common.ds {
 
-public class DataConverterExample {
+public class DataConverter__Example {
 
 	[Test]
 	public function multipleKeyDatasToTree():void {

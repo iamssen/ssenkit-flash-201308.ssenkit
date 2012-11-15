@@ -7,7 +7,7 @@ import de.polygonal.ds.LinkedQueue;
 import flash.display.Sprite;
 import flash.utils.getTimer;
 
-public class QueueExample {
+public class Queue__Example {
 
 	/*
 	 * queue 구조는 줄서기를 기준으로 알 수 있다.

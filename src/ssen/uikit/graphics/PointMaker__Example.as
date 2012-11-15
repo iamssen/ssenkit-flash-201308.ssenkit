@@ -3,7 +3,7 @@ package ssen.uikit.graphics {
 import ssen.devkit.ExampleCanvas;
 import ssen.devkit.TestDataFactory;
 
-public class PointMakerExample extends ExampleCanvas {
+public class PointMaker__Example extends ExampleCanvas {
 
 	[Test]
 	public function quadraticBezier():void {

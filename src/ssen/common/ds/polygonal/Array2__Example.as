@@ -3,7 +3,7 @@ package ssen.common.ds.polygonal {
 import de.polygonal.ds.Array2;
 import de.polygonal.ds.Itr;
 
-public class Array2Example {
+public class Array2__Example {
 
 	[Test]
 	public function basic():void {

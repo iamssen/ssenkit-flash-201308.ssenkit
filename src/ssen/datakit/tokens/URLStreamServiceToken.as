@@ -5,7 +5,7 @@ import flash.events.IOErrorEvent;
 import flash.events.SecurityErrorEvent;
 import flash.net.URLStream;
 
-public class URLStreamServiceToken implements IServiceToken {
+public class URLStreamServiceToken implements IAsyncToken {
 	private var _stream:URLStream;
 	private var _result:Function;
 	private var _fault:Function;
@@ -83,7 +83,7 @@ public class URLStreamServiceToken implements IServiceToken {
 		_fault=value;
 	}
 
-	public function disconnect():void {
+	public function close():void {
 		dispose();
 	}
 

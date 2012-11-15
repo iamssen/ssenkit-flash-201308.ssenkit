@@ -3,7 +3,7 @@ package ssen.common.ds.polygonal {
 import de.polygonal.ds.Heap;
 import de.polygonal.ds.Itr;
 
-public class HeapExample {
+public class Heap__Example {
 
 	[Test]
 	public function basic():void {

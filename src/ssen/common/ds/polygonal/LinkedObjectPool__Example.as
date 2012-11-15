@@ -1,7 +1,7 @@
 /// Example
 package ssen.common.ds.polygonal {
 
-public class LinkedObjectPoolExample {
+public class LinkedObjectPool__Example {
 
 	[Test]
 	public function basic():void {

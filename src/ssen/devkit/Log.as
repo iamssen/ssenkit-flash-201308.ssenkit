@@ -35,7 +35,7 @@ public class Log {
 			formatter=new DateFormatter;
 			formatter.formatString="LL:NN:SS";
 		}
-		var hostString:String=getObjectClassName(host);
+		var hostString:String=DevUtils.getObjectClassName(host);
 		var dateString:String=formatter.format(new Date);
 
 		var f:int=tracers.length;

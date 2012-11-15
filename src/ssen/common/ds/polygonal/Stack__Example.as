@@ -5,7 +5,7 @@ import de.polygonal.ds.ArrayedStack;
 
 import flash.display.Sprite;
 
-public class StackExample {
+public class Stack__Example {
 
 	[Test]
 	public function basic():void {

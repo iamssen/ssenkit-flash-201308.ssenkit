@@ -41,5 +41,5 @@
 						  verticalAlign="top"/>
 	</s:layout>
 
-	<s:DropDownList width="100%" dataProvider="{canvasList}" change="changeCanvas(event.newIndex)"/>
+	<s:DropDownList width="100%" dataProvider="{canvasList}" change="changeCanvas(event.newIndex)" selectedIndex="0"/>
 </s:Group>

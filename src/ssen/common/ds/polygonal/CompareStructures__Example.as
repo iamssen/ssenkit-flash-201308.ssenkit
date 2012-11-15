@@ -8,7 +8,7 @@ import de.polygonal.ds.DLL;
 import flash.display.Sprite;
 import flash.utils.getTimer;
 
-public class CompareStructures {
+public class CompareStructures__Example {
 
 	[Test]
 	public function compareSpeed():void {

@@ -4,7 +4,7 @@ import de.polygonal.ds.ArrayedDeque;
 
 import flash.display.Sprite;
 
-public class DequeExample {
+public class Deque__Example {
 
 	[Test]
 	public function basic():void {

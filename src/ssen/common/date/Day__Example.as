@@ -2,7 +2,7 @@
 package ssen.common.date {
 import de.polygonal.ds.Array2;
 
-public class DayExample {
+public class Day__Example {
 
 	// 일년 중 몇 번째 날인지 확인
 	[Test]

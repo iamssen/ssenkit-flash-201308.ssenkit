@@ -6,7 +6,7 @@ import de.polygonal.ds.TreeNode;
 
 import ssen.common.MathUtils;
 
-public class TreeExample {
+public class Tree__Example {
 	private var tree:TreeBuilder;
 	private var r:TreeNode;
 

@@ -8,7 +8,7 @@ import de.polygonal.ds.SLLNode;
 import flash.display.Sprite;
 import flash.utils.getTimer;
 
-public class LinkedListExample {
+public class LinkedList__Example {
 
 	[Test]
 	public function loopingAndParentList():void {

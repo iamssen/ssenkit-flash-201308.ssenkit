@@ -6,7 +6,7 @@ import ssen.common.MathUtils;
 import ssen.devkit.ExampleCanvas;
 import ssen.devkit.TestDataFactory;
 
-public class GradationExample extends ExampleCanvas {
+public class Gradation__Example extends ExampleCanvas {
 
 	[Test]
 	public function getGradationColors():void {

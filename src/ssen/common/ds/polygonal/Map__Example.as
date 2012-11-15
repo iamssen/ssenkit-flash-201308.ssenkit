@@ -7,7 +7,7 @@ import flash.display.Sprite;
 import flash.utils.Dictionary;
 import flash.utils.getTimer;
 
-public class MapExample {
+public class Map__Example {
 
 	[Test]
 	public function basic():void {
