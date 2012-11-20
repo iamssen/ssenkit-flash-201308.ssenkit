@@ -1,4 +1,4 @@
-# key 가 복수개인 Dictionary 와 같은 데이터 구조체
+# key 가 복수인 Dictionary 와 같은 데이터 구조체
 
 `<node category1="a" category2="b" value="123" />` 과 같은 기준이 2개 이상인 데이터를 저장하고, key 를 통해 사용 가능하게 해주는 구조체.
 

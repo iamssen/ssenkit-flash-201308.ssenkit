@@ -73,7 +73,7 @@ key id 로 값을 저장하고, 찾는다
 
 Dictionary 와 유사한 형태 이므로 큰 문제는 없다.
 
-당연히 Dictionary 가 더 빠르지만, `size()` 와 같이 **크기를 요구**하거나, `iterator()` 나 `toKeyArray()` 와 같은 **명확한 순서를 요구**하는 작업시에 쓸만하다
+당연히 Dictionary 가 더 빠르지만, `size()` 와 같이 **크기를 요구하는 작업 이거나**, `iterator()` 나 `toKeyArray()` 와 같은 **명확한 순서를 요구하는 작업시에 쓸만하다**
 
 - [example](Map__Example.as)
 - [de.polygonal.ds.Map](http://polygonal.github.com/ds/doc/types/de/polygonal/ds/Map.html)
@@ -95,7 +95,7 @@ Tree 형태의 데이터를 작업하는데 꼭 필요한 수준
 
 Array 랑 기능적 면에서 큰 차이가 있지는 않다. (즉, Array 로도 되는 작업들 이라는 것)
 
-단, `unshift()` 와 `shift()` 와 같은 전방 항목을 필요로 할 경우 Array 보다 상당한 속도를 보여준다.
+단, `unshift()` 와 `shift()` 와 같은 **전방 항목에 대한 편집을 필요로 할 경우 Array 보다 상당한 속도를 보여준다.**
 
 그리고, `insertBefore()` 나 `insertAfter()` 와 같은 **특정 위치 대비 항목 추가** 와 같은 기능이나, `shiftUp()`, `popDown()` 과 같은 **node 의 이동 기능들** 은 작업에 유용함을 준다.
 

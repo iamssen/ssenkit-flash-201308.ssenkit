@@ -2,11 +2,7 @@ package ssen.common.date {
 import ssen.common.StringUtils;
 
 
-/**
- * 시간을 제외한 날짜 계산을 할 때 사용
- * 
- * @includeExample DayExample.as
- */
+/** 시간을 제외한 날짜 계산을 할 때 사용 */
 public class Day {
 	private var d:Date;
 
@@ -175,6 +171,7 @@ public class Day {
 	//----------------------------------------------------------------
 	private static const days:Vector.<String>=new <String>["일", "월", "화", "수", "목", "금", "토"];
 
+	/** @private */
 	public function toString():String {
 		return StringUtils.formatToString('[Day {0}년 {1}월 {2}일 {3}요일]', date.fullYear, date.month + 1, date.date, days[date.day]);
 	}
