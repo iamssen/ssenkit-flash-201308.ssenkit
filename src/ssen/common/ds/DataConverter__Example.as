@@ -5,7 +5,7 @@ public class DataConverter__Example {
 	
 	[Test]
 	public function multipleKeyDatasToTree():void {
-		var l2t:L2T=new L2T;
+		var l2t:MultipleKeyDatasToTreeExample=new MultipleKeyDatasToTreeExample;
 		l2t.execute();
 	}
 }
@@ -16,8 +16,9 @@ import de.polygonal.ds.TreeNode;
 import ssen.common.StringUtils;
 import ssen.common.ds.DataConverter;
 
-class L2T {
+class MultipleKeyDatasToTreeExample {
 	
+	// 테스트를 위한 배열 데이터
 	private function getTestList():Array {
 		var list:Array=[];
 		list.push(new VO("A1", "B11", "C111", "aaa1", 10, 25));
@@ -33,18 +34,29 @@ class L2T {
 		return list;
 	}
 	
+	// 실행
 	public function execute():void {
+		
+		// tree 구조의 key 를 만들어둔다
 		var categoryKeys:Vector.<String>=new <String>["cate1", "cate2", "cate3"];
-		var itr:ArrayedItr=new ArrayedItr(getTestList());
+		
+		// 데이터를 iterator 로 만들어둔다 
+		// 데이터를 iterator 로 선택한 것은 기본적으로 Vector 데이터는 
+		// 하위로 타입캐스팅 할 수 있는 여지가 없기 때문이다.
+		// 번거롭더라도 개개별적 Iterator 도구를 만들어쓰도록 한다
+		var itr:Itr=new ArrayedItr(getTestList());
+		
+		// convert
 		var tree:TreeNode=DataConverter.multipleKeyDatasToTree(itr, categoryKeys);
 		
+		// 검증
 		tree.preorder(loopTree);
 	}
 	
 	// preorder (tree 의 상위에서 부터 하위로 이어지는 loop) callback
 	private function loopTree(node:TreeNode, preflight:Boolean, userData:Dynamic):Boolean {
 		if (!node.isRoot()) {
-			if (node.val is VO) {
+			if (node.isLeaf() && node.val is VO) {
 				printLeaf(node);
 			} else {
 				printSumChildren(node);
@@ -53,6 +65,9 @@ class L2T {
 		return true;
 	}
 	
+	//----------------------------------------------------------------
+	// 출력
+	//----------------------------------------------------------------
 	// 하위 leaf 들을 합산한 complex node 항목 출력
 	private function printSumChildren(node:TreeNode):void {
 		var itr:Itr=node.iterator();

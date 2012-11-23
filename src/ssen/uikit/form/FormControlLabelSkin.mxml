@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark">
+	<!-- host component -->
+	<fx:Metadata>
+		[HostComponent("ssen.uikit.form.FormControlLabel")]
+	</fx:Metadata>
+
+	<!-- states -->
+	<s:states>
+		<s:State name="none"/>
+		<s:State name="normal"/>
+		<s:State name="error"/>
+		<s:State name="disabled"/>
+	</s:states>
+
+	<s:Label text="{hostComponent.data.toString() + (hostComponent.required ? '*' : '')}" color.none="0xcccccc" color.disabled="0xbbbbbb"
+			 color.error="0xF22105" color.normal="0x000000"/>
+</s:Skin>

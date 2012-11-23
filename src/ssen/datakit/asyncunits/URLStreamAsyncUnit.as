@@ -1,4 +1,4 @@
-package ssen.datakit.asyncUnits {
+package ssen.datakit.asyncunits {
 import flash.events.ErrorEvent;
 import flash.events.Event;
 import flash.events.IOErrorEvent;
@@ -6,11 +6,15 @@ import flash.events.SecurityErrorEvent;
 import flash.net.URLStream;
 import ssen.common.IAsyncUnit;
 
-public class URLStreamServiceAsyncUnit implements IAsyncUnit {
+/** URLStream 을 AyncUnit 으로 작동되도록 해주는 기능 */
+public class URLStreamAsyncUnit implements IAsyncUnit {
 	private var _stream:URLStream;
 	private var _result:Function;
 	private var _fault:Function;
 	
+	//----------------------------------------------------------------
+	// 
+	//----------------------------------------------------------------
 	public function setStream(stream:URLStream):void {
 		clearStream();
 		
@@ -19,6 +23,19 @@ public class URLStreamServiceAsyncUnit implements IAsyncUnit {
 		addEvents();
 	}
 	
+	/** Stream 을 다른 형태의 VO 로 편집할 때 상속 구현한다 */
+	protected function getResult(stream:URLStream):* {
+		return stream;
+	}
+	
+	/** Error 를 다른 형태의 VO 로 편집할 때 상속 구현한다 */
+	protected function getError(event:ErrorEvent):* {
+		return event;
+	}
+	
+	//----------------------------------------------------------------
+	// 
+	//----------------------------------------------------------------
 	private function addEvents():void {
 		_stream.addEventListener(Event.COMPLETE, completeHandler, false, 0, true);
 		_stream.addEventListener(IOErrorEvent.IO_ERROR, errorHandler, false, 0, true);
@@ -60,34 +77,35 @@ public class URLStreamServiceAsyncUnit implements IAsyncUnit {
 		dispose();
 	}
 	
-	protected function getResult(stream:URLStream):* {
-		return stream;
-	}
-	
-	protected function getError(event:ErrorEvent):* {
-		return event;
-	}
-	
+	//----------------------------------------------------------------
+	// implements IAsyncUnit
+	//----------------------------------------------------------------
+	/** @inheritDoc */
 	public function get result():Function {
 		return _result;
 	}
 	
+	/** @inheritDoc */
 	public function set result(value:Function):void {
 		_result=result;
 	}
 	
+	/** @inheritDoc */
 	public function get fault():Function {
 		return _fault;
 	}
 	
+	/** @inheritDoc */
 	public function set fault(value:Function):void {
 		_fault=value;
 	}
 	
+	/** @inheritDoc */
 	public function close():void {
 		dispose();
 	}
 	
+	/** @inheritDoc */
 	public function dispose():void {
 		clearStream();
 		_result=null;

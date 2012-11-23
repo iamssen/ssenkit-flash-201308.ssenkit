@@ -35,6 +35,7 @@ public class TestDataFactory {
 		return str;
 	}
 
+	/** Random Easing Function */
 	public static function getRandomEaseFunction():Function {
 		var eases:Vector.<Function>=new <Function>[Linear.easeNone, Back.easeIn, Back.easeInOut, Back.easeOut, Bounce.easeIn,
 												   Bounce.easeInOut, Bounce.easeOut, Circ.easeIn, Circ.easeInOut, Circ.easeOut,

@@ -10,30 +10,30 @@ public class DataConverter {
 		if (root === null) {
 			root=new TreeNode;
 		}
-
+		
 		var node:TreeNode;
 		var source:Object;
 		var key:String;
-
+		
 		var f:int;
 		var fmax:int;
-
+		
 		while (itr.hasNext()) {
 			source=itr.next();
-
+			
 			f=-1;
 			fmax=categoryKeys.length;
 			node=root;
-
+			
 			while (++f < fmax) {
 				key=source[categoryKeys[f]];
-
+				
 				if (node.find(key) === null) {
 					node.appendNode(new TreeNode(key));
 				}
-
+				
 				node=node.find(key) as TreeNode;
-
+				
 				if (f === fmax - 1) {
 					if (appendLastNodeWith === null) {
 						node.appendNode(new TreeNode(source));
@@ -43,7 +43,7 @@ public class DataConverter {
 				}
 			}
 		}
-
+		
 		return root;
 	}
 }

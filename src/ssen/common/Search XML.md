@@ -1,4 +1,4 @@
-# e4x 형식을 사용한 필터링
+# E4X 형식을 사용한 필터링
 
 - 기본적으로 `node.list.(boolean)` 형태로 필터링 된 XMLList 를 만들어낼 수 있다.
 - 지정한 list 의 하위 method 를 다룰 수 있는듯 싶다.
@@ -21,7 +21,7 @@
 		<bb>66</bb>
 	</xml>
 
-## node 다루기
+## Node 다루기
 
 node 의 name 을 가져오는 `name()` 을 정규식 검사를 통해 필터링 한다
 
@@ -63,7 +63,7 @@ node value 의 경우는 `toString()` 을 정규식 검사를 통해 필터링 �
 	// <bb cc="125">Schall</bb>
 	// <bb>Schala</bb>
 
-## attribute 다루기
+## Attribute 다루기
 
 attribute 의 이름을 가져오는 방식은 없다. 그래서, 특정 attribute 의 이름으로 검색하는데는 문제가 약간 있는듯...
 
