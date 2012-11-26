@@ -11,8 +11,10 @@ import ssen.common.IDisposable;
 
 /** 초기화 되었을 때 */
 [Event(name="init", type="flash.events.Event")]
+
 /** 초기화 중에 에러가 발생됨 */
 [Event(name="connectError", type="ssen.airkit.connection.ConnectionErrorEvent")]
+
 /** 메세지를 수신했음 */
 [Event(name="receiveMessage", type="ssen.airkit.connection.ConnectionEvent")]
 

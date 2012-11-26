@@ -43,28 +43,11 @@
 
 1. (ssen.common) Worker 관련 유틸들
 
-## DataKit
-
-1. (ssen.datakit.remote) up, download 라이브러리들
-	- MultipartFormDataPacketWriter : 라이브러리 정리, 기능 문서화
-	- cache creator, divide uploader 등은 정리해서 알고리즘 문서화
-	- http spec 문서화
-
-1. (ssen.datakit.db) sql get, set 라이브러리
-	- SQLGet, SQLSet : 라이브러리 유지, 기능 문서화 
-
-1. (ssen.datakit.air) air 플랫폼 특성을 관리하는 기능들
-	- AIRUpdate : 라이브러리 유지, 기능 문서화
-
 ## UIKit
 1. (ssen.uikit.graphics)
 	- DrawTrianglesExample : snippet 으로 전환
 	- DrawMatrixExample : library 로 전환, 문서화 
 	- examples.math : 알고리즘 문서화, snippet 으로 전환
-
-1. <del>(ssen.uikit.formControl) flex form component control</del>
-1. (ssen.uikit.gridComponents) grid components
-	- Elastic Data Grid
 	
 ## github.recipe.node.js 예제들 정리하기
 

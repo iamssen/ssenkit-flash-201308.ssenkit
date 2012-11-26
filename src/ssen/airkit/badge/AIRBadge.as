@@ -19,18 +19,18 @@ import ssen.common.IDisposable;
 
 /** AIR Badge Service, minimum stage size 217*140px */
 final public class AIRBadge extends EventDispatcher implements IDisposable {
-	/* *********************************************************************
-	 * settings
-	 ********************************************************************* */
+	//----------------------------------------------------------------
+	// settings
+	//----------------------------------------------------------------
 	/** air update xml 의 web 경로 */
 	public var updateURL:String;
 	
-	/** badge 상에서 update 가능시에 install 시킬 것인지 여부 */
-	public var badgeUpdateInstall:Boolean=false;
+	/** update 혹은 install 가능시에 Badge 상에서 install 시킬 것인지 여부 */
+	public var installInBadge:Boolean=false;
 	
-	/* *********************************************************************
-	 * info
-	 ********************************************************************* */
+	//----------------------------------------------------------------
+	// info
+	//----------------------------------------------------------------
 	// 어플리케이션 아이디
 	private var _appId:String;
 	
@@ -51,9 +51,9 @@ final public class AIRBadge extends EventDispatcher implements IDisposable {
 	
 	private var _error:Error;
 	
-	/* *********************************************************************
-	 * utils
-	 ********************************************************************* */
+	//----------------------------------------------------------------
+	// utils
+	//----------------------------------------------------------------
 	private var _loader:Loader;
 	
 	private var _air:Object;
@@ -63,7 +63,7 @@ final public class AIRBadge extends EventDispatcher implements IDisposable {
 	
 	public function AIRBadge(updateURL:String=null, badgeUpdateInstall:Boolean=false) {
 		this.updateURL=updateURL;
-		this.badgeUpdateInstall=badgeUpdateInstall;
+		this.installInBadge=badgeUpdateInstall;
 	}
 	
 	/** air runtime 의 설치 상태 */
@@ -84,9 +84,9 @@ final public class AIRBadge extends EventDispatcher implements IDisposable {
 		service.send({noCache: getTimer()}).addResponder(new Responder(updateInfoResult, updateInfoFault));
 	}
 	
-	/* *********************************************************************
-	 * step 1 : update xml catch and air.swf download
-	 ********************************************************************* */
+	//----------------------------------------------------------------
+	// 1. update xml catch and air.swf download
+	//----------------------------------------------------------------
 	private function updateInfoResult(event:ResultEvent):void {
 		var update:Object=event.result.update;
 		
@@ -129,9 +129,9 @@ final public class AIRBadge extends EventDispatcher implements IDisposable {
 		dispatchEvent(new Event(Event.INIT));
 	}
 	
-	/* *********************************************************************
-	 * step 2 : runtime and app version check
-	 ********************************************************************* */
+	//----------------------------------------------------------------
+	// 2. runtime and app version check
+	//----------------------------------------------------------------
 	private function stateCheck():void {
 		switch (getStatus()) {
 			case "installed":
@@ -152,7 +152,7 @@ final public class AIRBadge extends EventDispatcher implements IDisposable {
 	private function reciveAppVersion(version:String):void {
 		if (version == null || version == "") {
 			_state=AIRBadgeState.READY_INSTALL_APPLICATION;
-		} else if (badgeUpdateInstall && _updateVersion != version) {
+		} else if (installInBadge && _updateVersion != version) {
 			_state=AIRBadgeState.READY_INSTALL_APPLICATION;
 		} else {
 			_state=AIRBadgeState.READY_LAUNCH;
@@ -161,10 +161,9 @@ final public class AIRBadge extends EventDispatcher implements IDisposable {
 		dispatchInit();
 	}
 	
-	
-	/* *********************************************************************
-	 * air.swf api
-	 ********************************************************************* */
+	//----------------------------------------------------------------
+	// air.swf api
+	//----------------------------------------------------------------
 	private function checkNullState():void {
 		if (_state == null) {
 			throw AIRBadgeError.STATE_NOT_CHECKED;

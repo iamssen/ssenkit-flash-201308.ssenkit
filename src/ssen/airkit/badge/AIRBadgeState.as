@@ -16,12 +16,22 @@ final public class AIRBadgeState {
 	
 	private var _annotation:String;
 	
+	private static var pids:int=0;
+	private var pid:int;
+	
 	public function AIRBadgeState(annotation:String="") {
 		_annotation=annotation;
+		
+		pid=pids;
+		pids++;
 	}
 	
 	public function get annotation():String {
 		return _annotation;
+	}
+	
+	public function equal(state:AIRBadgeState):Boolean {
+		return state.pid === pid;
 	}
 
 }
