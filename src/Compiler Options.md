@@ -6,5 +6,10 @@
 
 # compc
 
+- <http://livedocs.adobe.com/flex/3/html/compilers_22.html#250507>
+- <http://www.docsultant.com/site2/articles/flex_cmd.html>
+
+- `-library-path` swc 에 포함될 library path
+
 # asdoc
 

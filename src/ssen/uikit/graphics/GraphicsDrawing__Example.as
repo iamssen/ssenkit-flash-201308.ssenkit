@@ -1,6 +1,7 @@
 package ssen.uikit.graphics {
 import flash.display.BitmapData;
 import flash.display.Graphics;
+import flash.display.TriangleCulling;
 import flash.geom.Matrix;
 
 import ssen.common.MathUtils;
@@ -12,7 +13,7 @@ public class GraphicsDrawing__Example extends ExampleCanvas {
 	
 	[Test]
 	public function useMatrixInBitmapDrawing():void {
-		canvas.graphics.clear();
+		clear();
 		
 		var g:Graphics=canvas.graphics;
 		var bitmap:BitmapData=new TestImage().bitmapData;
@@ -42,6 +43,7 @@ public class GraphicsDrawing__Example extends ExampleCanvas {
 		g.endFill();
 		
 		// 리사이즈, 포지션 이동, 회전 (리사이즈랑 겹치면 공식이 좀 애매해짐...)
+		// 리사이즈와 회전을 같이 처리하는 공식이 뭘까?
 		mat.identity();
 		//		mat.a = 100/bitmap.width;
 		//		mat.b = 100/bitmap.height;
@@ -51,6 +53,29 @@ public class GraphicsDrawing__Example extends ExampleCanvas {
 		
 		g.beginBitmapFill(bitmap, mat);
 		g.drawRect(100, 100, 1000, 1000);
+		g.endFill();
+	}
+	
+	[Test]
+	public function drawSkewImage():void {
+		clear();
+		
+		var g:Graphics=canvas.graphics;
+		var bitmap:BitmapData=new TestImage().bitmapData;
+		
+		// triangle setting. top left, top right, bottom left, bottom right
+		var vertices : Vector.<Number> = new <Number>[80, 80, 500, 40, 90, 300, 400, 230];
+		
+		// tl --> tr --> dl , tr --> dr --> dl 순서로 삼각형을 그림
+		var indices : Vector.<int> = new <int>[0, 1, 2, 1, 3, 2];
+		
+		// vertices 와 1 : 1 매치, bitmapData.width 를 1 로 취급 100분율로 bitmapData 를 맵핑
+		var uvData : Vector.<Number> = new <Number>[0, 0, 1, 0, 0, 1, 1, 1];
+		
+		// draw
+		g.beginBitmapFill(bitmap, null, false, true);
+		g.lineStyle(1, 0x000000);
+		g.drawTriangles(vertices, indices, uvData, TriangleCulling.NONE);
 		g.endFill();
 	}
 }

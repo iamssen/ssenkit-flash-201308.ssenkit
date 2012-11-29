@@ -28,8 +28,8 @@ public class MathUtils {
 									  5.637, 5.655, 5.672, 5.690, 5.707, 5.725, 5.742, 5.760, 5.777, 5.794, 5.812, 5.829, 5.847, 5.864,
 									  5.882, 5.899, 5.917, 5.934, 5.952, 5.969, 5.986, 6.004, 6.021, 6.039, 6.056, 6.074, 6.091, 6.109,
 									  6.126, 6.144, 6.161, 6.178, 6.196, 6.213, 6.231, 6.248, 6.266, 6.283];
-
-
+	
+	
 	/** random 한 16 진수 문자열을 만든다 */
 	public static function randHex(length:int=8):String {
 		var str:String="";
@@ -39,29 +39,29 @@ public class MathUtils {
 		}
 		return str;
 	}
-
+	
 	/** min 과 max 사이에서 random 한 값을 만든다 */
 	public static function rand(min:int, max:int):int {
 		return Math.random() * (max - min + 1) + min;
 	}
-
+	
 	/** degree 값을 radian 으로 바꿔준다 */
-	public static function deg2rad(deg:int):Number {
+	public static function deg2rad(deg:Number):Number {
 		var rad:Number=deg * Math.PI / 180;
 		return rad;
 	}
-
+	
 	/** radian 값을 degree 로 바꿔준다 */
-	public static function rad2deg(rad:Number):int {
+	public static function rad2deg(rad:Number):Number {
 		return rad * 180 / Math.PI;
 	}
-
+	
 	/** undefined, NaN 과 같은 타입 오류 가능성이 있는 숫자 정보를 기본값 으로 치환해준다 */
-	public static function nanTo(num:*, defaultValue:Number=0):int {
+	public static function nanTo(num:*, defaultValue:Number=0):Number {
 		if (num === undefined || isNaN(Number(num))) {
 			return defaultValue;
 		}
-
+		
 		return Number(num);
 	}
 }
@@ -71,23 +71,23 @@ class NotUse {
 	/** 1 ~ 100 까지의 prime number 집합 */
 	public static const PRIME_NUMBER_100:Array=[2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89,
 												97];
-
+	
 	/** 음의 정수 */
 	public static const TYPE_NEGATIVE:String="negative";
-
+	
 	/** 양의 정수, 자연수 */
 	public static const TYPE_NATURAL:String="natural";
-
+	
 	/** 0 을 나타냄 */
 	public static const TYPE_0:String="zero";
-
+	
 	/** 소수 */
 	public static const TYPE_DECIMAL:String="decimal";
-
+	
 	/** 지정된 숫자까지의 prime number 를 가져온다 */
 	public static function primeNumbers(max:int):Array {
 		var arr:Array=new Array;
-
+		
 		for (var f:int=2; f <= max; f++) {
 			for (var s:int=2; s <= f; s++) {
 				if (f == s) {
@@ -99,7 +99,7 @@ class NotUse {
 		}
 		return arr;
 	}
-
+	
 	public static function pow2Size(value:int):int {
 		var x:int=2;
 		while (x < value) {
@@ -107,13 +107,13 @@ class NotUse {
 		}
 		return x;
 	}
-
+	
 	/** 소인수 분해 */
 	public static function factorizationPrime(x:int):Array {
 		var arr:Array=new Array;
 		var flag:Boolean=true;
 		var d:int;
-
+		
 		while (flag) {
 			if (isPrime(x)) {
 				flag=false;
@@ -124,10 +124,10 @@ class NotUse {
 				arr.push(d);
 			}
 		}
-
+		
 		return arr;
 	}
-
+	
 	/** 나누어 떨어지는 소인수 찾기 */
 	public static function findPrimeFactor(x:int):int {
 		var f:int;
@@ -138,7 +138,7 @@ class NotUse {
 		}
 		return x;
 	}
-
+	
 	/** prime number 인지 확인 */
 	public static function isPrime(x:int):Boolean {
 		var f:int;
@@ -149,11 +149,11 @@ class NotUse {
 		}
 		return false;
 	}
-
+	
 	/** 2,2,3,3,4 와 같은 배열을 [2]=3, [3]=1, [4]=1 과 형태의 제곱수 배열로 바꿔준다 */
 	public static function convertSquares(arr:Array):Object {
 		var arr2:Object=new Object;
-
+		
 		for each (var f:int in arr) {
 			if (arr2[f] == undefined) {
 				arr2[f]=1;
@@ -163,7 +163,7 @@ class NotUse {
 		}
 		return arr2;
 	}
-
+	
 	/** 최소공배수 구하기 */
 	public static function leastCommonMultiple(... nums):int {
 		var x:int=nums[0];
@@ -171,10 +171,10 @@ class NotUse {
 		for (cnt=1; cnt <= nums.length - 1; cnt++) {
 			x=lcm(x, nums[cnt]);
 		}
-
+		
 		return x;
 	}
-
+	
 	/** 최대공약수 구하기 */
 	public static function greatestCommonDivisor(... nums):int {
 		var x:int=nums[0];
@@ -182,20 +182,20 @@ class NotUse {
 		for (cnt=1; cnt <= nums.length - 1; cnt++) {
 			x=gcd(x, nums[cnt]);
 		}
-
+		
 		return x;
 	}
-
+	
 	/** 최대공약수 구하기 */
 	public static function gcd(a:int, b:int):int {
 		return (b == 0) ? a : gcd(b, a % b);
 	}
-
+	
 	/** 최소공배수 구하기 */
 	public static function lcm(a:int, b:int):int {
 		return a * b / gcd(a, b);
 	}
-
+	
 	/** 정수인지 확인한다 */
 	public static function isInteger(x:Number):Boolean {
 		if (x - int(x) == 0) {
@@ -203,7 +203,7 @@ class NotUse {
 		}
 		return false;
 	}
-
+	
 	/** 숫자의 형태를 가져온다 */
 	public static function numberTypeOf(x:Number):String {
 		if (x == 0) {
