@@ -9,6 +9,17 @@ import ssen.devkit.ExampleCanvas;
 public class MathematicalGraphics__Example extends ExampleCanvas {
 	
 	[Test]
+	public function testXYRotation():void {
+		clear();
+		
+		var t1:XYRotation=new XYRotation;
+		t1.x=300;
+		t1.y=300;
+		
+		canvas.addChild(t1);
+	}
+	
+	[Test]
 	public function testSineCurveMotion():void {
 		clear();
 		
@@ -126,5 +137,39 @@ class SineCurveExample extends Sprite {
 		removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
 		
 		stage.frameRate=24;
+	}
+}
+
+class XYRotation extends Sprite {
+	public var x1:int=100;
+	public var y1:int=100;
+	public var deg:int;
+	
+	public function XYRotation() {
+		
+		deg=MathUtils.rand(0, 360);
+		
+		var radius:Number=Math.sqrt(Math.pow(x1, 2) + Math.pow(y1, 2));
+		var r1:Number=Math.atan(y1 / x1);
+		var r2:Number=r1 - MathUtils.deg2rad(deg);
+		
+		var x2:int=radius * Math.cos(r2);
+		var y2:int=radius * Math.sin(r2);
+		
+		trace("XYRotation.XYRotation()", x1, y1, x2, y2, x2 - x2, y2 - y2);
+		
+		trace("XYRotation.XYRotation()", MathUtils.rad2deg(r1));
+		
+		graphics.beginFill(MathUtils.rand(0x000000, 0xffffff));
+		graphics.drawCircle(0, 0, 3);
+		graphics.endFill();
+		
+		graphics.beginFill(MathUtils.rand(0x000000, 0xffffff));
+		graphics.drawCircle(x1, y1, 3);
+		graphics.endFill();
+		
+		graphics.beginFill(MathUtils.rand(0x000000, 0xffffff));
+		graphics.drawCircle(x2, y2, 3);
+		graphics.endFill();
 	}
 }
