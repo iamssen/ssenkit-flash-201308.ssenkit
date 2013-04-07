@@ -5,8 +5,7 @@ import de.polygonal.ds.TreeNode;
 /** @includeExample DataConverterExample.as */
 public class DataConverter {
 	/** 복합적인 key 를 가진 데이터 리스트를 Tree 형태로 전환한다 */
-	public static function multipleKeyDatasToTree(itr:Itr, categoryKeys:Vector.<String>, root:TreeNode=null,
-												  appendLastNodeWith:Function=null):TreeNode {
+	public static function multipleKeyDatasToTree(itr:Itr, categoryKeys:Vector.<String>, root:TreeNode=null, appendLastNodeWith:Function=null):TreeNode {
 		if (root === null) {
 			root=new TreeNode;
 		}

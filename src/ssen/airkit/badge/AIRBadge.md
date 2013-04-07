@@ -49,8 +49,6 @@ AIR Application 의 Update 및 Install 을 담당하는 Badge 를 만드는데 �
 		}
 	}
 
-----------------------------------
-
 Browser Invocation 은 기본 Invocation 과 마찬가지로 실행되어 있더라도 다시 전달이 가능하다.
 
 Web 상의 특정 파일을 실행하고 싶은 경우라면 argument 에 파일의 url 을 전달해서 AIR 에서 다운로드 받은 다음, 다운로드 받은 파일을 실행하는 형태의 구성 역시 가능할듯 싶다.

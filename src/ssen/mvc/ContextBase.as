@@ -481,7 +481,7 @@ class Collection extends MultipleKeyDataCollection {
 		var indices:Vector.<int>=_find({type: type, listener: listener});
 		
 		if (indices.length > 0) {
-			return indices[0]["unit"];
+			return _read(indices[0])["unit"];
 		}
 		
 		var unit:EvtUnit=new EvtUnit;

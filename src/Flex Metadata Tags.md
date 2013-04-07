@@ -90,19 +90,18 @@ arrayType 을 String 으로 지정한다해서 숫자형에 대한 에러가 나
 MXML Component 를 만드는 상황에서 enumeration 을 통한 제한을 둬야 한다면 필요할듯...
 
 
-<table>
-<tr><th>Property</th><th>Type</th><th>Description</th></tr>
-<tr><td>category</td><td>String</td><td>Groups the property into a specific subcategory in the Property inspector of the Flash Builder user interface. The default category is "Other". Specify a value of "Common", "Effects", "Events", "Layout Constraints", "Size", "Styles", "Text", or "Other".</td></tr>
-<tr><td>defaultValue</td><td>String or Number</td><td>Sets the initial value in the editor that appears in the Property inspector when you modify the attribute. The default value is determined from the property definition.</td></tr>
-<tr><td>enumeration</td><td>String</td><td>Specifies a comma-delimited list of legal values for the property. Only these values are allowed; for example, item1,item2,item3. Notice the lack of a space character between items so that Flex Builder does not interpret a space as a part of a valid value.<br/><br/>This information appears as code hints and in the Property inspector. If you define a Boolean variable, Flash Builder automatically shows true and false without you having to specifying them using enumeration.</td></tr>
-<tr><td>environment</td><td>String</td><td>Specifies which inspectable properties should not be allowed (environment=none), which are used only for Flash Builder (environment=Flash), and which are used only by Flex and not Flash Builder (environment=MXML).</td></tr>
-<tr><td>format</td><td>String</td><td>Determines the type of editor that appears in the Property inspector when you modify the attribute. You can use this property when the data type of the attribute is not specific to its function. For example, for a property of type Number, you can specify format="Color" to cause Flash Builder to open a color editor when you modify the attribute. Common values for the format property include "Length", "Color", "Time", "EmbeddedFile", and "File".</td></tr>
-<tr><td>listOffset</td><td>Number</td><td>Specifies the default index into a List value.</td></tr>
-<tr><td>name</td><td>String</td><td>Specifies the display name for the property; for example, FontWidth. If not specified, use the property’s name, such as _fontWidth.</td></tr>
-<tr><td>type</td><td>String</td><td>Specifies the type specifier. If omitted, use the property’s type. The following values are valid:<br/>Array<br/>Boolean<br/>Color<br/>Font Name<br/>List<br/>Number<br/>Object<br/>String<br/><br/>If the property is an Array, you must list the valid values for the Array.</td></tr>
-<tr><td>variable</td><td>String</td><td>Specifies the variable to which this parameter is bound.</td></tr>
-<tr><td>verbose</td><td>Number</td><td>Indicates that this inspectable property should be displayed in the Flash Builder user interface only when the user indicates that verbose properties should be included. If this property is not specified, Flash Builder assumes that the property should be displayed.</td></tr>
-</table>
+|Property		|Type				|Description|
+|--------		|----				|-----------|
+|category		|String				|Groups the property into a specific subcategory in the Property inspector of the Flash Builder user interface. The default category is "Other". Specify a value of "Common", "Effects", "Events", "Layout Constraints", "Size", "Styles", "Text", or "Other".|
+|defaultValue	|String or Number	|Sets the initial value in the editor that appears in the Property inspector when you modify the attribute. The default value is determined from the property definition.|
+|enumeration	|String				|Specifies a comma-delimited list of legal values for the property. Only these values are allowed; for example, item1,item2,item3. Notice the lack of a space character between items so that Flex Builder does not interpret a space as a part of a valid value.<br/><br/>This information appears as code hints and in the Property inspector. If you define a Boolean variable, Flash Builder automatically shows true and false without you having to specifying them using enumeration.|
+|environment	|String				|Specifies which inspectable properties should not be allowed (environment=none), which are used only for Flash Builder (environment=Flash), and which are used only by Flex and not Flash Builder (environment=MXML).|
+|format			|String				|Determines the type of editor that appears in the Property inspector when you modify the attribute. You can use this property when the data type of the attribute is not specific to its function. For example, for a property of type Number, you can specify format="Color" to cause Flash Builder to open a color editor when you modify the attribute. Common values for the format property include "Length", "Color", "Time", "EmbeddedFile", and "File".|
+|listOffset		|Number				|Specifies the default index into a List value.|
+|name			|String				|Specifies the display name for the property; for example, FontWidth. If not specified, use the property’s name, such as _fontWidth.|
+|type			|String				|Specifies the type specifier. If omitted, use the property’s type. The following values are valid:<br/>Array<br/>Boolean<br/>Color<br/>Font Name<br/>List<br/>Number<br/>Object<br/>String<br/><br/>If the property is an Array, you must list the valid values for the Array.|
+|variable		|String				|Specifies the variable to which this parameter is bound.|
+|verbose		|Number				|Indicates that this inspectable property should be displayed in the Flash Builder user interface only when the user indicates that verbose properties should be included. If this property is not specified, Flash Builder assumes that the property should be displayed.|
 
 ## [NonCommittingChangeEvent]
 

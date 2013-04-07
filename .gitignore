@@ -1,7 +1,9 @@
-.pydevproject
 .actionScriptProperties
+.flexProperties
 .flexLibProperties
-.DS_Store
-.project
 .settings
+.project
+.pydevproject
+bin-debug
+bin-release
 bin

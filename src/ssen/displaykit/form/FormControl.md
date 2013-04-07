@@ -15,7 +15,7 @@
 
 1. state 일관화 ( skin, errorTip, enabled 등등의 처리를 일괄적으로 )
 2. tab key 컨트롤 ( index 방식이 아닌, prev, next 직접 처리 )
-3. <del>초기값 컨트롤</del> 필요없을 듯...
+3. ~~초기값 컨트롤~~ 필요없을 듯...
 
 그 외의 경우는 편의에 따라서 내부적으로 확장한다
 
@@ -37,6 +37,7 @@
 	- dispatch(FormControlEvent.VALUE_CHANGED)
 	- dispatch(FormControlEvent.STATE_CHANGED)
 	
+sample code
 	
 	var control : IFormControl = new InputControl(view.input);
 	

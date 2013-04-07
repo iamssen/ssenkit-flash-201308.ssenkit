@@ -1,24 +1,23 @@
 # 구조들 간 속도 차이
 
-<table>
-	<tr><th>test</th>				<th>ds_fp9_debug.swc</th>		<th>ds_fp9.swc</th></tr>
-	<tr><th>queue enqueue</th>		<td>34</td>						<td>23</td></tr>
-	<tr><th>stack push</th>			<td>39</td>						<td>16</td></tr>
-	<tr><th>deque pushBack</th>		<td>27</td>						<td>14</td></tr>
-	<tr><th>deque pushFront</th>	<td>27</td>						<td>15</td></tr>
-	<tr><th>array push</th>			<td>7</td>						<td>7</td></tr>
-	<tr><th>array unshift</th>		<td>1176</td>					<td>1183</td></tr>
-	<tr><th>dll append</th>			<td>63</td>						<td>32</td></tr>
-	<tr><th>dll prepend</th>		<td>61</td>						<td>32</td></tr>
-	<tr><th>queue dequeue</th>		<td>29</td>						<td>14</td></tr>
-	<tr><th>stack pop</th>			<td>21</td>						<td>12</td></tr>
-	<tr><th>deque popBack</th>		<td>22</td>						<td>13</td></tr>
-	<tr><th>deque popFront</th>		<td>22</td>						<td>14</td></tr>
-	<tr><th>array pop</th>			<td>6</td>						<td>7</td></tr>
-	<tr><th>array shift</th>		<td>442</td>					<td>435</td></tr>
-	<tr><th>dll removeTail</th>		<td>38</td>						<td>21</td></tr>
-	<tr><th>dll removeHead</th>		<td>39</td>						<td>22</td></tr>
-</table>
+|test			|ds_fp9_debug.swc	|ds_fp9.swc	|
+|----			|----------------	|----------	|
+|queue enqueue	|34					|23			|
+|stack push		|39					|16			|
+|deque pushBack	|27					|14			|
+|deque pushFront|27					|15			|
+|array push		|7					|7			|
+|array unshift	|1176				|1183		|
+|dll append		|63					|32			|
+|dll prepend	|61					|32			|
+|queue dequeue	|29					|14			|
+|stack pop		|21					|12			|
+|deque popBack	|22					|13			|
+|deque popFront	|22					|14			|
+|array pop		|6					|7			|
+|array shift	|442				|435		|
+|dll removeTail	|38					|21			|
+|dll removeHead	|39					|22			|
 
 - 전방 입출력이 필요한 경우 Array 보다는 Linked List 가 효율적일 수 있다
 - 큰 차이는 아니지만, 일반적인 Linked List 보다는 Queue, Stack, Deque 등이 좀 더 빠르다. 유형이 맞다면 사용 하는 것이 좋다.
