@@ -23,7 +23,6 @@ public class ContextBase implements IContext {
 		injector.mapValue(IEventBus, eventBus);
 		injector.mapValue(IContextView, contextView);
 		injector.mapValue(ICommandMap, commandMap);
-		injector.mapValue(IViewOuterBridge, viewOpener);
 		injector.mapValue(IViewInjector, viewInjector);
 		injector.mapValue(ICallLater, callLater);
 		
@@ -51,7 +50,6 @@ public class ContextBase implements IContext {
 		viewInjector.dispose();
 		contextViewInjector.dispose();
 		commandMap.dispose();
-		viewOpener.dispose();
 		
 		_contextView=null;
 		_parentContext=null;
@@ -105,10 +103,6 @@ public class ContextBase implements IContext {
 	}
 	
 	protected function get viewCatcher():IViewCatcher {
-		throw new Error("not implemented");
-	}
-	
-	protected function get viewOpener():IViewOuterBridge {
 		throw new Error("not implemented");
 	}
 	

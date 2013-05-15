@@ -8,7 +8,6 @@ import ssen.mvc.IContextViewInjector;
 import ssen.mvc.IInjector;
 import ssen.mvc.IViewCatcher;
 import ssen.mvc.IViewInjector;
-import ssen.mvc.IViewOuterBridge;
 
 import starling.display.DisplayObjectContainer;
 import starling.events.Event;
@@ -21,7 +20,6 @@ import starling.events.EventDispatcher;
  * @see https://github.com/iamssen/SSenMvcFramework.Modular
  */
 public class Context extends ContextBase {
-	private var _viewOpener:IViewOuterBridge;
 	private var _viewCatcher:IViewCatcher;
 	private var _viewInjector:IViewInjector;
 	private var _callLater:CallLater;
@@ -53,7 +51,6 @@ public class Context extends ContextBase {
 	override protected function dispose():void {
 		super.dispose();
 		
-		_viewOpener=null;
 		_viewCatcher=null;
 		_viewInjector=null;
 		_callLater=null;
@@ -88,12 +85,11 @@ public class Context extends ContextBase {
 	// =========================================================
 	/** @see ssen.mvc.ICallLater */
 	override protected function get callLater():ICallLater {
-		return _callLater||=new CallLater;
-	}
-	
-	/** @see ssen.mvc.core.IViewOpener */
-	final override protected function get viewOpener():IViewOuterBridge {
-		return _viewOpener||=new ImplViewOuterBridge(viewInjector, contextViewInjector);
+		if (!_callLater) {
+			_callLater=new CallLater;
+			_callLater.setContextView(contextView);
+		}
+		return _callLater;
 	}
 	
 	/** @private */
@@ -120,22 +116,14 @@ import ssen.mvc.IInjector;
 import ssen.mvc.IMediator;
 import ssen.mvc.IViewCatcher;
 import ssen.mvc.IViewInjector;
-import ssen.mvc.IViewOuterBridge;
 
 import starling.display.DisplayObject;
 import starling.display.DisplayObjectContainer;
+import starling.display.Stage;
 import starling.events.Event;
 import starling.events.EventDispatcher;
 
-//==========================================================================================
-// call later
-//==========================================================================================
 class CallLater implements ICallLater {
-	
-	[Inject]
-	public function setContextView(value:IContextView):void {
-		contextView=value as DisplayObjectContainer;
-	}
 	
 	private var contextView:DisplayObjectContainer;
 	private var pool:Vector.<Item>;
@@ -145,6 +133,9 @@ class CallLater implements ICallLater {
 		pool=new Vector.<Item>;
 	}
 	
+	public function setContextView(value:IContextView):void {
+		contextView=value as DisplayObjectContainer;
+	}
 	
 	public function add(func:Function, params:Array=null):void {
 		var item:Item=new Item;
@@ -204,6 +195,7 @@ class Item {
 class ImplViewCatcher implements IViewCatcher {
 	private var _run:Boolean;
 	private var view:DisplayObjectContainer;
+	private var stage:Stage;
 	private var viewInjector:IViewInjector;
 	private var contextViewInjector:IContextViewInjector;
 	private var contextView:IContextView;
@@ -225,9 +217,19 @@ class ImplViewCatcher implements IViewCatcher {
 	
 	public function start(view:IContextView):void {
 		this.view=view as DisplayObjectContainer;
+		this.stage=view.getStage() as Stage;
 		this.view.addEventListener(Event.ADDED, added);
+		this.stage.addEventListener(Event.ADDED, globalAdded);
 		
 		_run=true;
+	}
+	
+	private function globalAdded(event:Event):void {
+		var view:DisplayObject=event.target as DisplayObject;
+		
+		if (viewInjector.hasMapping(view, true)) {
+			viewInjector.injectInto(view);
+		}
 	}
 	
 	private function added(event:Event):void {
@@ -269,9 +271,11 @@ class ImplViewCatcher implements IViewCatcher {
 	
 	public function stop():void {
 		view.removeEventListener(Event.ADDED, added);
+		stage.removeEventListener(Event.ADDED, globalAdded);
 		
 		_run=false;
 		view=null;
+		stage=null;
 	}
 	
 	public function isRun():Boolean {
@@ -283,31 +287,48 @@ class ImplViewCatcher implements IViewCatcher {
 // view injector
 //==========================================================================================
 class ImplViewInjector implements IViewInjector {
+	private var globalMediatorMap:Dictionary;
 	private var mediatorMap:Dictionary;
 	private var injector:IInjector;
 	
 	public function ImplViewInjector(injector:IInjector) {
 		this.injector=injector;
 		mediatorMap=new Dictionary;
+		globalMediatorMap=new Dictionary;
 	}
 	
 	public function dispose():void {
+		globalMediatorMap=null;
 		mediatorMap=null;
 		injector=null;
 	}
 	
-	public function unmapView(viewClass:Class):void {
-		if (hasMapping(viewClass)) {
-			delete mediatorMap[viewClass];
+	public function unmapView(viewClass:Class, global:Boolean=false):void {
+		if (global) {
+			if (globalMediatorMap[viewClass] !== undefined) {
+				delete globalMediatorMap[viewClass];
+			}
+		} else {
+			if (mediatorMap[viewClass] !== undefined) {
+				delete mediatorMap[viewClass];
+			}
 		}
 	}
 	
-	public function hasMapping(view:*):Boolean {
-		if (view is Class) {
-			return mediatorMap[view] !== undefined;
+	public function hasMapping(view:*, global:Boolean=false):Boolean {
+		if (global) {
+			if (view is Class) {
+				return globalMediatorMap[view] !== undefined;
+			}
+			
+			return globalMediatorMap[view["constructor"]] !== undefined;
+		} else {
+			if (view is Class) {
+				return mediatorMap[view] !== undefined;
+			}
+			
+			return mediatorMap[view["constructor"]] !== undefined;
 		}
-		
-		return mediatorMap[view["constructor"]] !== undefined;
 	}
 	
 	public function injectInto(view:Object):void {
@@ -318,11 +339,18 @@ class ImplViewInjector implements IViewInjector {
 		}
 	}
 	
-	public function mapView(viewClass:Class, mediatorClass:Class=null):void {
-		if (mediatorMap[viewClass] !== undefined) {
-			throw new Error(getQualifiedClassName((viewClass) + " is mapped!!!"));
+	public function mapView(viewClass:Class, mediatorClass:Class=null, global:Boolean=false):void {
+		if (global) {
+			if (globalMediatorMap[viewClass] !== undefined) {
+				throw new Error(getQualifiedClassName(viewClass) + " is mapped!!!");
+			}
+			globalMediatorMap[viewClass]=mediatorClass;
+		} else {
+			if (mediatorMap[viewClass] !== undefined) {
+				throw new Error(getQualifiedClassName(viewClass) + " is mapped!!!");
+			}
+			mediatorMap[viewClass]=mediatorClass;
 		}
-		mediatorMap[viewClass]=mediatorClass;
 	}
 }
 
@@ -363,45 +391,3 @@ class MediatorController implements IDisposable {
 		view=null;
 	}
 }
-
-//==========================================================================================
-// view outer bridge
-//==========================================================================================
-class ImplViewOuterBridge implements IViewOuterBridge {
-	private var viewInjector:IViewInjector;
-	private var contextViewInjector:IContextViewInjector;
-	
-	public function ImplViewOuterBridge(viewInjector:IViewInjector, contextViewInjector:IContextViewInjector) {
-		this.viewInjector=viewInjector;
-		this.contextViewInjector=contextViewInjector;
-	}
-	
-	public function dispose():void {
-		viewInjector=null;
-		contextViewInjector=null;
-	}
-	
-	public function ready(view:Object):void {
-		var display:DisplayObject=view as DisplayObject;
-		display.addEventListener(Event.ADDED_TO_STAGE, addedToStage);
-	}
-	
-	private function addedToStage(event:Event):void {
-		var display:DisplayObject=event.target as DisplayObject;
-		display.removeEventListener(Event.ADDED_TO_STAGE, addedToStage);
-		
-		if (display is IContextView) {
-			var contextView:IContextView=display as IContextView;
-			
-			if (!contextView.contextInitialized) {
-				contextViewInjector.injectInto(contextView);
-			}
-		} else if (viewInjector.hasMapping(display)) {
-			viewInjector.injectInto(display);
-		}
-	}
-}
-
-
-
-
