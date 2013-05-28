@@ -2,8 +2,6 @@ package ssen.mvc {
 import de.polygonal.ds.HashMap;
 import de.polygonal.ds.Itr;
 
-import flash.utils.Dictionary;
-
 import ssen.common.IDisposable;
 
 public class EvtUnitManager implements IDisposable {

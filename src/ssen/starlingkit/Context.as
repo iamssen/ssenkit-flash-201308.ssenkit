@@ -156,6 +156,19 @@ class CallLater implements ICallLater {
 		pool=null;
 	}
 	
+	public function has(func:Function):Boolean {
+		var f:int=pool.length;
+		var item:Item;
+		while (--f >= 0) {
+			item=pool[f];
+			if (item.func === func) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 	private function enterFrameHandler(event:Event):void {
 		contextView.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
 		executeAll();

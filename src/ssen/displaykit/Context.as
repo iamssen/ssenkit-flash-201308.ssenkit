@@ -7,8 +7,6 @@ import ssen.mvc.ContextBase;
 import ssen.mvc.ICallLater;
 import ssen.mvc.IContext;
 import ssen.mvc.IContextView;
-import ssen.mvc.IContextViewInjector;
-import ssen.mvc.IInjector;
 import ssen.mvc.IViewCatcher;
 import ssen.mvc.IViewInjector;
 
@@ -107,13 +105,11 @@ import flash.display.DisplayObject;
 import flash.display.DisplayObjectContainer;
 import flash.display.Stage;
 import flash.events.Event;
-import flash.events.IEventDispatcher;
 import flash.utils.Dictionary;
 import flash.utils.getQualifiedClassName;
 
 import ssen.common.IDisposable;
 import ssen.mvc.ICallLater;
-import ssen.mvc.IContext;
 import ssen.mvc.IContextView;
 import ssen.mvc.IContextViewInjector;
 import ssen.mvc.IInjector;
@@ -154,6 +150,19 @@ class CallLater implements ICallLater {
 		pool=null;
 	}
 
+	public function has(func:Function):Boolean {
+		var f:int=pool.length;
+		var item:Item;
+		while (--f >= 0) {
+			item=pool[f];
+			if (item.func === func) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	private function enterFrameHandler(event:Event):void {
 		contextView.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
 		executeAll();
@@ -178,8 +187,6 @@ class CallLater implements ICallLater {
 
 		pool.length=0;
 	}
-
-
 }
 
 class Item {

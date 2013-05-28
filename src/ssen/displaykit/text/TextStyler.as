@@ -1,6 +1,5 @@
 package ssen.displaykit.text {
 import flash.geom.Rectangle;
-import flash.text.engine.CFFHinting;
 import flash.text.engine.TextLine;
 
 import flashx.textLayout.compose.TextLineRecycler;

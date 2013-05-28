@@ -8,5 +8,11 @@ public interface ICallLater extends IDisposable {
 	 * @param params 인자 항목
 	 */
 	function add(func:Function, params:Array=null):void;
+
+	/**
+	 * 지연 실행시킬 function 이 이미 등록되어 있는지 확인한다
+	 * @param func 지연 실행시킬 function
+	 */
+	function has(func:Function):Boolean;
 }
 }
