@@ -425,7 +425,9 @@ class MediatorController implements IDisposable {
 	}
 
 	public function dispose():void {
-		wireDisposer.dispose();
+		if (wireDisposer) {
+			wireDisposer.dispose();
+		}
 		view.removeEventListener(Event.REMOVED_FROM_STAGE, removedFromStage);
 		mediator.onRemove();
 		wireDisposer=null;
