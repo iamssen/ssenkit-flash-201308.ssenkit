@@ -106,6 +106,7 @@ import flash.display.DisplayObjectContainer;
 import flash.display.Stage;
 import flash.events.Event;
 import flash.utils.Dictionary;
+import flash.utils.describeType;
 import flash.utils.getQualifiedClassName;
 
 import ssen.common.IDisposable;
@@ -362,6 +363,7 @@ class ImplViewInjector implements IViewInjector {
 class MediatorController implements IDisposable {
 	private var view:DisplayObject;
 	private var mediator:IMediator;
+	private var wireDisposer:IDisposable;
 
 	public function MediatorController(injector:IInjector, view:DisplayObject, mediatorClass:Class=null) {
 		this.view=view;
@@ -370,6 +372,8 @@ class MediatorController implements IDisposable {
 			mediator=injector.instantiate(mediatorClass);
 			mediator.setView(view);
 
+			wireDisposer=methodWiring(view, mediator);
+
 			if (view.stage) {
 				mediator.onRegister();
 				view.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStage);
@@ -377,6 +381,37 @@ class MediatorController implements IDisposable {
 				view.addEventListener(Event.ADDED_TO_STAGE, addedToStage);
 			}
 		}
+	}
+
+	private function methodWiring(view:Object, mediator:Object):IDisposable {
+		var x:XML=describeType(view);
+		var list:XMLList=x..metadata.(@name == "Wire");
+		var variable:XML;
+		var name:String;
+		var disposer:ViewWireDisposer;
+
+		var f:int=-1;
+		var fmax:int=list.length();
+
+		if (fmax > 0) {
+			disposer=new ViewWireDisposer;
+			disposer.view=view;
+
+			while (++f < fmax) {
+				variable=list[f].parent();
+
+				if (variable.name() == "variable" && variable.@type == "Function") {
+					name=variable.@name;
+
+					if (mediator[name] !== undefined && typeof mediator[name] === "function") {
+						view[name]=mediator[name];
+						disposer.list.push(name);
+					}
+				}
+			}
+		}
+
+		return disposer;
 	}
 
 	private function addedToStage(event:Event):void {
@@ -390,9 +425,25 @@ class MediatorController implements IDisposable {
 	}
 
 	public function dispose():void {
+		wireDisposer.dispose();
 		view.removeEventListener(Event.REMOVED_FROM_STAGE, removedFromStage);
 		mediator.onRemove();
+		wireDisposer=null;
 		mediator=null;
 		view=null;
+	}
+}
+
+class ViewWireDisposer implements IDisposable {
+	public var view:Object;
+	public var list:Vector.<String>=new Vector.<String>;
+
+	public function dispose():void {
+		var f:int=list.length;
+		while (--f >= 0) {
+			view[list[f]]=null;
+		}
+		view=null;
+		list=null;
 	}
 }
