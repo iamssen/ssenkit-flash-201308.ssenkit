@@ -4,8 +4,6 @@ import ssen.mvc.ContextBase;
 import ssen.mvc.ICallLater;
 import ssen.mvc.IContext;
 import ssen.mvc.IContextView;
-import ssen.mvc.IContextViewInjector;
-import ssen.mvc.IInjector;
 import ssen.mvc.IViewCatcher;
 import ssen.mvc.IViewInjector;
 
@@ -110,7 +108,6 @@ import flash.utils.getQualifiedClassName;
 
 import ssen.common.IDisposable;
 import ssen.mvc.ICallLater;
-import ssen.mvc.IContext;
 import ssen.mvc.IContextView;
 import ssen.mvc.IContextViewInjector;
 import ssen.mvc.IInjector;
@@ -122,7 +119,6 @@ import starling.display.DisplayObject;
 import starling.display.DisplayObjectContainer;
 import starling.display.Stage;
 import starling.events.Event;
-import starling.events.EventDispatcher;
 
 class CallLater implements ICallLater {
 	
@@ -377,7 +373,7 @@ class MediatorController implements IDisposable {
 		this.view=view;
 		
 		if (mediatorClass) {
-			mediator=injector.instantiate(mediatorClass);
+			mediator=injector.injectInto(new mediatorClass) as IMediator;
 			mediator.setView(view);
 			
 			wireDisposer=methodWiring(view, mediator);

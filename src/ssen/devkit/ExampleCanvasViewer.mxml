@@ -7,6 +7,7 @@
 		<![CDATA[
 			import mx.collections.IList;
 			import mx.core.IVisualElement;
+			
 			private var _canvasList:IList;
 
 			private var canvas:IVisualElement;

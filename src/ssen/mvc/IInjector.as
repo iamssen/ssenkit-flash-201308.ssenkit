@@ -1,33 +1,15 @@
 package ssen.mvc {
-import flash.system.ApplicationDomain;
-
 import ssen.common.IDisposable;
 
 public interface IInjector extends IDisposable {
-	function mapValue(whenAskedFor:Class, useValue:Object, named:String=""):*;
-
-	function mapClass(whenAskedFor:Class, instantiateClass:Class, named:String=""):*;
-
-	function mapSingleton(whenAskedFor:Class, named:String=""):*;
-
-	function mapSingletonOf(whenAskedFor:Class, useSingletonOf:Class, named:String=""):*;
-
-	function mapRule(whenAskedFor:Class, useRule:*, named:String=""):*;
-
-	function injectInto(target:Object):void;
-
-	function instantiate(clazz:Class):*;
-
-	function getInstance(clazz:Class, named:String=""):*;
-
-	function createChild(applicationDomain:ApplicationDomain=null):IInjector;
-
-	function unmap(clazz:Class, named:String=""):void;
-
-	function hasMapping(clazz:Class, named:String=""):Boolean;
-
-	function get applicationDomain():ApplicationDomain;
-
-	function set applicationDomain(value:ApplicationDomain):void;
+	function createChild():IInjector;
+	function getInstance(asktype:Class, named:String=""):*;
+	function hasMapping(asktype:Class, named:String=""):Boolean;
+	function injectInto(obj:Object):Object;
+	function mapClass(asktype:Class, usetype:Class=null, named:String=""):void;
+	function mapSingleton(asktype:Class, usetype:Class=null, named:String=""):void;
+	function mapValue(asktype:Class, usevalue:*, named:String=""):void;
+	function unmap(asktype:Class, named:String=""):void;
+	function registerDependent(target:*):XML;
 }
 }

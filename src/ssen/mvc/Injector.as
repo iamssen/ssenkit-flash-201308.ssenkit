@@ -1,23 +1,23 @@
-package ssen.di {
+package ssen.mvc {
 import flash.utils.describeType;
 import flash.utils.getQualifiedClassName;
 
-use namespace injection_internal;
+use namespace mvc_internal;
 
-public class SSenInjector {
-	injection_internal static var dependents:Object={};
+public class Injector implements IInjector {
+	mvc_internal static var dependents:Object={};
 
 	private var factories:Object;
-	private var parent:SSenInjector;
+	private var parent:Injector;
 	private var factoriesset:Array;
 
-	public function SSenInjector(parent:SSenInjector=null) {
+	public function Injector(parent:Injector=null) {
 		this.parent=parent;
 		this.factories={};
 		this.factoriesset=[this.factories];
 
 		if (parent) {
-			var current:SSenInjector=parent;
+			var current:Injector=parent;
 			while (current) {
 				factoriesset.push(current.factories);
 				current=current.parent;
@@ -28,8 +28,8 @@ public class SSenInjector {
 	//==========================================================================================
 	// children
 	//==========================================================================================
-	public function createChild():SSenInjector {
-		return new SSenInjector(this);
+	public function createChild():IInjector {
+		return new Injector(this);
 	}
 
 	//==========================================================================================
@@ -49,7 +49,7 @@ public class SSenInjector {
 		var id:String=getQualifiedClassName(obj);
 
 		if (!dependents[id]) {
-			throw new Error("undefined dependent by " + id);
+			registerDependent(obj);
 		}
 
 		var d:Object;
@@ -85,8 +85,12 @@ public class SSenInjector {
 
 				method.apply(null, args);
 			} else {
-				// TODO
+				throw new Error("type is property or method");
 			}
+		}
+		
+		if (obj is IDependent) {
+			IDependent(obj).onDependent();
 		}
 
 		return obj;
@@ -100,7 +104,7 @@ public class SSenInjector {
 			usetype=asktype;
 		}
 		factories[getNameByClass(asktype, named)]=new InstantiateFactory(this, usetype);
-		makeDependentSpec(usetype);
+		registerDependent(usetype);
 	}
 
 	public function mapSingleton(asktype:Class, usetype:Class=null, named:String=""):void {
@@ -108,12 +112,12 @@ public class SSenInjector {
 			usetype=asktype;
 		}
 		factories[getNameByClass(asktype, named)]=new SingletonFactory(this, usetype);
-		makeDependentSpec(usetype);
+		registerDependent(usetype);
 	}
 
 	public function mapValue(asktype:Class, usevalue:*, named:String=""):void {
 		factories[getNameByClass(asktype, named)]=new ValueFactory(this, usevalue);
-		makeDependentSpec(usevalue);
+		registerDependent(usevalue);
 	}
 
 	public function unmap(asktype:Class, named:String=""):void {
@@ -143,7 +147,7 @@ public class SSenInjector {
 	//==========================================================================================
 	// utils
 	//==========================================================================================
-	injection_internal function makeDependentSpec(target:*):XML {
+	public function registerDependent(target:*):XML {
 		var id:String=getQualifiedClassName(target);
 		var spec:XML=describeType(target);
 
@@ -226,13 +230,32 @@ public class SSenInjector {
 }
 }
 import ssen.common.IDisposable;
-import ssen.di.InstanceFactory;
-import ssen.di.SSenInjector;
+import ssen.mvc.Injector;
+
+class InstanceFactory implements IDisposable {
+	private var injector:Injector;
+
+	public function InstanceFactory(injector:Injector) {
+		this.injector=injector;
+	}
+
+	public function getInstance():* {
+		throw new Error("not implemented");
+	}
+
+	protected function instanceInitialize(instance:Object):Object {
+		return injector.injectInto(instance);
+	}
+
+	public function dispose():void {
+		injector=null;
+	}
+}
 
 class InstantiateFactory extends InstanceFactory {
 	private var type:Class;
 
-	public function InstantiateFactory(injector:SSenInjector, type:Class) {
+	public function InstantiateFactory(injector:Injector, type:Class) {
 		super(injector);
 		this.type=type;
 	}
@@ -251,7 +274,7 @@ class SingletonFactory extends InstanceFactory {
 	private var type:Class;
 	private var instance:Object;
 
-	public function SingletonFactory(injector:SSenInjector, type:Class) {
+	public function SingletonFactory(injector:Injector, type:Class) {
 		super(injector);
 		this.type=type;
 	}
@@ -280,7 +303,7 @@ class ValueFactory extends InstanceFactory {
 	private var value:*;
 	private var initialized:Boolean;
 
-	public function ValueFactory(injector:SSenInjector, value:*) {
+	public function ValueFactory(injector:Injector, value:*) {
 		super(injector);
 		this.value=value;
 	}

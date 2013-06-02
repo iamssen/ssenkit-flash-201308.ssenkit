@@ -93,7 +93,7 @@ public class ContextBase implements IContext {
 			return _injector;
 		}
 
-		_injector=parentContext === null ? new SwiftSuspendersInjector : parentContext.injector.createChild();
+		_injector=parentContext === null ? new ContextInjector : parentContext.injector.createChild();
 
 		return _injector;
 	}
@@ -120,13 +120,9 @@ public class ContextBase implements IContext {
 	}
 }
 }
-import flash.system.ApplicationDomain;
 import flash.utils.Dictionary;
 
-import org.swiftsuspenders.Injector;
-
-import ssen.di.SSenInjector;
-import ssen.di.injection_internal;
+import ssen.common.ds.MultipleKeyDataCollection;
 import ssen.mvc.DispatchTo;
 import ssen.mvc.Evt;
 import ssen.mvc.EvtUnitManager;
@@ -136,13 +132,14 @@ import ssen.mvc.ICommandMap;
 import ssen.mvc.IContext;
 import ssen.mvc.IContextView;
 import ssen.mvc.IContextViewInjector;
-import ssen.mvc.IDependent;
 import ssen.mvc.IEventBus;
 import ssen.mvc.IEvtDispatcher;
 import ssen.mvc.IEvtUnit;
 import ssen.mvc.IInjector;
+import ssen.mvc.Injector;
+import ssen.mvc.mvc_internal;
 
-use namespace injection_internal;
+use namespace mvc_internal;
 
 class ImplCommandMap implements ICommandMap {
 	private var dic:Dictionary;
@@ -360,68 +357,48 @@ class ContextEvent extends Evt {
 //==========================================================================================
 // injector
 //==========================================================================================
-class SwiftSuspendersInjector extends Injector implements IInjector {
-	//	protected static const XML_CONFIG:XML=<types>
-	//			<type name='org.robotlegs.mvcs::Actor'>
-	//				<field name='eventDispatcher'/>
-	//			</type>
-	//			<type name='org.robotlegs.mvcs::Command'>
-	//				<field name='contextView'/>
-	//				<field name='mediatorMap'/>
-	//				<field name='eventDispatcher'/>
-	//				<field name='injector'/>
-	//				<field name='commandMap'/>
-	//			</type>
-	//			<type name='org.robotlegs.mvcs::Mediator'>
-	//				<field name='contextView'/>
-	//				<field name='mediatorMap'/>
-	//				<field name='eventDispatcher'/>
-	//			</type>
-	//		</types>;
-	//
-	//	public function SwiftSuspendersInjector(xmlConfig:XML=null) {
-	//		if (xmlConfig) {
-	//			for each (var typeNode:XML in XML_CONFIG.children()) {
-	//				xmlConfig.appendChild(typeNode);
-	//			}
-	//		}
-	//		super(xmlConfig);
-	//	}
+//class SwiftSuspendersInjector extends Injector implements IInjector {
+//	public function createChild(applicationDomain:ApplicationDomain=null):IInjector {
+//		var injector:SwiftSuspendersInjector=new SwiftSuspendersInjector();
+//		injector.setApplicationDomain(applicationDomain);
+//		injector.setParentInjector(this);
+//		return injector;
+//	}
+//
+//	public function get applicationDomain():ApplicationDomain {
+//		return getApplicationDomain();
+//	}
+//
+//	public function set applicationDomain(value:ApplicationDomain):void {
+//		setApplicationDomain(value);
+//	}
+//
+//	public function dispose():void {
+//		// ???
+//	}
+//
+//	override public function injectInto(target:Object):void {
+//		super.injectInto(target);
+//
+//		if (target is IDependent) {
+//			IDependent(target).onDependent();
+//		}
+//	}
+//}
 
-	public function createChild(applicationDomain:ApplicationDomain=null):IInjector {
-		var injector:SwiftSuspendersInjector=new SwiftSuspendersInjector();
-		injector.setApplicationDomain(applicationDomain);
-		injector.setParentInjector(this);
-		return injector;
+class ContextInjector extends Injector implements IInjector {
+	public function ContextInjector(parent:ContextInjector=null) {
+		super(parent);
 	}
 
-	public function get applicationDomain():ApplicationDomain {
-		return getApplicationDomain();
+	override public function createChild():IInjector {
+		return new ContextInjector(this);
 	}
 
-	public function set applicationDomain(value:ApplicationDomain):void {
-		setApplicationDomain(value);
-	}
-
-	public function dispose():void {
-		// ???
-	}
-
-	override public function injectInto(target:Object):void {
-		super.injectInto(target);
-
-		if (target is IDependent) {
-			IDependent(target).onDependent();
-		}
-	}
-}
-
-class ContextInjector extends SSenInjector {
-	override injection_internal function makeDependentSpec(target:*):XML {
-		var spec:XML=super.injection_internal::makeDependentSpec(target);
+	override public function registerDependent(target:*):XML {
+		var spec:XML=super.registerDependent(target);
 		return spec;
 	}
-
 }
 
 //==========================================================================================
@@ -479,8 +456,6 @@ class EvtDispatcher implements IEvtDispatcher {
 	}
 }
 
-import ssen.common.ds.MultipleKeyDataCollection;
-import ssen.mvc.IEvtUnit;
 
 class Collection extends MultipleKeyDataCollection {
 	public function add(type:String, listener:Function):IEvtUnit {

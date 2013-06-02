@@ -369,7 +369,7 @@ class MediatorController implements IDisposable {
 		this.view=view;
 
 		if (mediatorClass) {
-			mediator=injector.instantiate(mediatorClass);
+			mediator=injector.injectInto(new mediatorClass) as IMediator;
 			mediator.setView(view);
 
 			wireDisposer=methodWiring(view, mediator);
