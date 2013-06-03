@@ -137,9 +137,9 @@ import ssen.mvc.IEvtDispatcher;
 import ssen.mvc.IEvtUnit;
 import ssen.mvc.IInjector;
 import ssen.mvc.Injector;
-import ssen.mvc.mvc_internal;
+import ssen.mvc.dependent;
 
-use namespace mvc_internal;
+use namespace dependent;
 
 class ImplCommandMap implements ICommandMap {
 	private var dic:Dictionary;
