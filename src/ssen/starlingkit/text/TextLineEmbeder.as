@@ -17,7 +17,6 @@ public class TextLineEmbeder {
 
 import flash.display.BitmapData;
 import flash.geom.Matrix;
-import flash.sampler.getSize;
 import flash.text.engine.TextLine;
 
 import starling.display.Image;

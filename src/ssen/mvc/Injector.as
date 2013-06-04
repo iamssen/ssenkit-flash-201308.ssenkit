@@ -149,11 +149,11 @@ public class Injector implements IInjector {
 	//==========================================================================================
 	public function registerDependent(target:*):XML {
 		var id:String=getQualifiedClassName(target);
-		var spec:XML=describeType(target);
-
 		if (dependents[id]) {
-			return spec;
+			return null;
 		}
+		
+		var spec:XML=describeType(target);
 
 		var injectList:XMLList=spec..metadata.(@name == "Inject");
 
@@ -197,7 +197,7 @@ public class Injector implements IInjector {
 		}
 
 		dependents[id]=list;
-
+		
 		return spec;
 	}
 

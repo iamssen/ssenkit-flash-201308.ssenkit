@@ -395,10 +395,13 @@ class ContextInjector extends Injector implements IInjector {
 		return new ContextInjector(this);
 	}
 
+	/** @inheritDoc */
 	override public function registerDependent(target:*):XML {
 		var spec:XML=super.registerDependent(target);
 		return spec;
 	}
+
+
 }
 
 //==========================================================================================
