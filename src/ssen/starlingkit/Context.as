@@ -21,20 +21,20 @@ public class Context extends ContextBase {
 	private var _viewCatcher:IViewCatcher;
 	private var _viewInjector:IViewInjector;
 	private var _callLater:CallLater;
-	
+
 	public function Context(contextView:IContextView, parentContext:IContext=null) {
 		super(contextView, parentContext);
 	}
-	
+
 	// =========================================================
 	// initialize
 	// =========================================================
 	/** @private */
 	final override protected function initialize():void {
 		super.initialize();
-		
+
 		var contextView:DisplayObjectContainer=this.contextView as DisplayObjectContainer;
-		
+
 		// stage 가 있으면 바로 start, 아니면 added to stage 까지 지연시킴
 		if (contextView.stage) {
 			startupContextView();
@@ -42,18 +42,18 @@ public class Context extends ContextBase {
 			contextView.addEventListener(Event.ADDED_TO_STAGE, addedToStage);
 		}
 	}
-	
+
 	// ==========================================================================================
 	// dispose resources
 	// ==========================================================================================
 	override protected function dispose():void {
 		super.dispose();
-		
+
 		_viewCatcher=null;
 		_viewInjector=null;
 		_callLater=null;
 	}
-	
+
 	// =========================================================
 	// initialize context
 	// =========================================================
@@ -61,23 +61,23 @@ public class Context extends ContextBase {
 		if (viewInjector.hasMapping(contextView)) {
 			viewInjector.injectInto(contextView);
 		}
-		
+
 		startup();
-		
+
 		EventDispatcher(contextView).addEventListener(Event.REMOVED_FROM_STAGE, removedFromStage);
 	}
-	
+
 	private function addedToStage(event:Event):void {
 		EventDispatcher(contextView).removeEventListener(Event.ADDED_TO_STAGE, addedToStage);
 		startupContextView();
 	}
-	
+
 	private function removedFromStage(event:Event):void {
 		EventDispatcher(contextView).removeEventListener(Event.REMOVED_FROM_STAGE, removedFromStage);
 		shutdown();
 		dispose();
 	}
-	
+
 	// =========================================================
 	// implementation getters
 	// =========================================================
@@ -89,12 +89,12 @@ public class Context extends ContextBase {
 		}
 		return _callLater;
 	}
-	
+
 	/** @private */
 	final override protected function get viewCatcher():IViewCatcher {
 		return _viewCatcher||=new ImplViewCatcher(viewInjector, contextViewInjector, contextView);
 	}
-	
+
 	/** @see ssen.mvc.core.IViewInjector */
 	final override protected function get viewInjector():IViewInjector {
 		return _viewInjector||=new ImplViewInjector(injector);
@@ -102,8 +102,8 @@ public class Context extends ContextBase {
 }
 }
 
+import flash.events.Event;
 import flash.utils.Dictionary;
-import flash.utils.describeType;
 import flash.utils.getQualifiedClassName;
 
 import ssen.common.IDisposable;
@@ -118,41 +118,40 @@ import ssen.mvc.IViewInjector;
 import starling.display.DisplayObject;
 import starling.display.DisplayObjectContainer;
 import starling.display.Stage;
-import starling.events.Event;
 
 class CallLater implements ICallLater {
-	
+
 	private var contextView:DisplayObjectContainer;
 	private var pool:Vector.<Item>;
 	private var on:Boolean;
-	
+
 	public function CallLater() {
 		pool=new Vector.<Item>;
 	}
-	
+
 	public function setContextView(value:IContextView):void {
 		contextView=value as DisplayObjectContainer;
 	}
-	
+
 	public function add(func:Function, params:Array=null):void {
 		var item:Item=new Item;
 		item.func=func;
 		item.params=params;
-		
+
 		pool.push(item);
-		
+
 		if (!on) {
 			contextView.addEventListener(Event.ENTER_FRAME, enterFrameHandler);
 			on=true;
 		}
 	}
-	
+
 	public function dispose():void {
 		contextView.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
 		contextView=null;
 		pool=null;
 	}
-	
+
 	public function has(func:Function):Boolean {
 		var f:int=pool.length;
 		var item:Item;
@@ -162,32 +161,32 @@ class CallLater implements ICallLater {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	private function enterFrameHandler(event:Event):void {
 		contextView.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
 		executeAll();
 	}
-	
+
 	private function executeAll():void {
 		on=false;
-		
+
 		if (pool.length <= 0) {
 			return;
 		}
-		
+
 		var item:Item;
-		
+
 		var f:int=-1;
 		var fmax:int=pool.length;
-		
+
 		while (++f < fmax) {
 			item=pool[f];
 			item.func.apply(null, item.params);
 		}
-		
+
 		pool.length=0;
 	}
 
@@ -209,57 +208,57 @@ class ImplViewCatcher implements IViewCatcher {
 	private var viewInjector:IViewInjector;
 	private var contextViewInjector:IContextViewInjector;
 	private var contextView:IContextView;
-	
+
 	public function ImplViewCatcher(viewInjector:IViewInjector, contextViewInjector:IContextViewInjector, contextView:IContextView) {
 		this.viewInjector=viewInjector;
 		this.contextViewInjector=contextViewInjector;
 		this.contextView=contextView;
 	}
-	
+
 	public function dispose():void {
 		if (_run) {
 			stop();
 		}
-		
+
 		viewInjector=null;
 		contextViewInjector=null;
 	}
-	
+
 	public function start(view:IContextView):void {
 		this.view=view as DisplayObjectContainer;
 		this.stage=view.getStage() as Stage;
 		this.view.addEventListener(Event.ADDED, added);
 		this.stage.addEventListener(Event.ADDED, globalAdded);
-		
+
 		_run=true;
 	}
-	
+
 	private function globalAdded(event:Event):void {
 		var view:DisplayObject=event.target as DisplayObject;
-		
-		if (viewInjector.hasMapping(view, true)) {
+
+		if (viewInjector.hasMapping(view) && viewInjector.isGlobal(view)) {
 			viewInjector.injectInto(view);
 		}
 	}
-	
+
 	private function added(event:Event):void {
 		var view:DisplayObject=event.target as DisplayObject;
 		var isChild:Boolean=isMyChild(view);
-		
+
 		if (view is IContextView && isChild) {
 			var contextView:IContextView=view as IContextView;
-			
+
 			if (!contextView.contextInitialized) {
 				contextViewInjector.injectInto(contextView);
 			}
-		} else if (viewInjector.hasMapping(view) && isChild) {
+		} else if (viewInjector.hasMapping(view) && !viewInjector.isGlobal(view) && isChild) {
 			viewInjector.injectInto(view);
 		}
 	}
-	
+
 	private function isMyChild(view:DisplayObject):Boolean {
 		var parent:DisplayObjectContainer=view.parent;
-		
+
 		while (true) {
 			if (parent is IContextView) {
 				if (parent == this.contextView) {
@@ -268,26 +267,26 @@ class ImplViewCatcher implements IViewCatcher {
 					return false;
 				}
 			}
-			
+
 			parent=parent.parent;
-			
+
 			if (parent === null) {
 				break;
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	public function stop():void {
 		view.removeEventListener(Event.ADDED, added);
 		stage.removeEventListener(Event.ADDED, globalAdded);
-		
+
 		_run=false;
 		view=null;
 		stage=null;
 	}
-	
+
 	public function isRun():Boolean {
 		return _run;
 	}
@@ -297,87 +296,87 @@ class ImplViewCatcher implements IViewCatcher {
 // view injector
 //==========================================================================================
 class ImplViewInjector implements IViewInjector {
-	private var globalMediatorMap:Dictionary;
-	private var mediatorMap:Dictionary;
+	private var map:Dictionary;
 	private var injector:IInjector;
-	
+
 	public function ImplViewInjector(injector:IInjector) {
 		this.injector=injector;
-		mediatorMap=new Dictionary;
-		globalMediatorMap=new Dictionary;
+		map=new Dictionary;
 	}
-	
+
 	public function dispose():void {
-		globalMediatorMap=null;
-		mediatorMap=null;
+		map=null;
 		injector=null;
 	}
-	
-	public function unmapView(viewClass:Class, global:Boolean=false):void {
-		if (global) {
-			if (globalMediatorMap[viewClass] !== undefined) {
-				delete globalMediatorMap[viewClass];
-			}
-		} else {
-			if (mediatorMap[viewClass] !== undefined) {
-				delete mediatorMap[viewClass];
-			}
+
+	public function unmapView(viewClass:Class):void {
+		if (map[viewClass] !== undefined) {
+			delete map[viewClass];
 		}
 	}
-	
-	public function hasMapping(view:*, global:Boolean=false):Boolean {
-		if (global) {
-			if (view is Class) {
-				return globalMediatorMap[view] !== undefined;
-			}
-			
-			return globalMediatorMap[view["constructor"]] !== undefined;
-		} else {
-			if (view is Class) {
-				return mediatorMap[view] !== undefined;
-			}
-			
-			return mediatorMap[view["constructor"]] !== undefined;
+
+	public function hasMapping(view:*):Boolean {
+		if (view is Class) {
+			return map[view] !== undefined;
 		}
+
+		return map[view["constructor"]] !== undefined;
 	}
-	
+
 	public function injectInto(view:Object):void {
-		if (mediatorMap[view["constructor"]] is Class) {
-			new MediatorController(injector, view as DisplayObject, mediatorMap[view["constructor"]]);
+		if (view is DisplayObject) {
+			if (map[view["constructor"]] === undefined) {
+				throw new Error("class is not inject target");
+			} else {
+				var info:ViewInfo=map[view["constructor"]];
+
+				if (info.mediatorType is Class) {
+					new MediatorController(injector, view as DisplayObject, info.mediatorType);
+				} else {
+					injector.injectInto(view);
+				}
+			}
 		} else {
-			injector.injectInto(view);
+			throw new Error("view is just DisplayObject");
 		}
+	}
+
+	public function mapView(viewClass:Class, mediatorClass:Class=null, global:Boolean=false):void {
+		if (map[viewClass] !== undefined) {
+			throw new Error(getQualifiedClassName(viewClass) + " is mapped!!!");
+		}
+
+		var info:ViewInfo=new ViewInfo;
+		info.type=viewClass;
+		info.mediatorType=mediatorClass;
+		info.global=global;
+
+		map[viewClass]=info;
 	}
 	
-	public function mapView(viewClass:Class, mediatorClass:Class=null, global:Boolean=false):void {
-		if (global) {
-			if (globalMediatorMap[viewClass] !== undefined) {
-				throw new Error(getQualifiedClassName(viewClass) + " is mapped!!!");
-			}
-			globalMediatorMap[viewClass]=mediatorClass;
-		} else {
-			if (mediatorMap[viewClass] !== undefined) {
-				throw new Error(getQualifiedClassName(viewClass) + " is mapped!!!");
-			}
-			mediatorMap[viewClass]=mediatorClass;
-		}
+	public function isGlobal(view:*):Boolean {
+		var info:ViewInfo=(view is Class) ? map[view] : map[view["constructor"]];
+		return info.global;
 	}
+}
+
+class ViewInfo {
+	public var type:Class;
+	public var mediatorType:Class;
+	public var global:Boolean;
 }
 
 class MediatorController implements IDisposable {
 	private var view:DisplayObject;
 	private var mediator:IMediator;
-	private var wireDisposer:IDisposable;
-	
-	public function MediatorController(injector:IInjector, view:DisplayObject, mediatorClass:Class=null) {
+
+	public function MediatorController(injector:IInjector, view:DisplayObject, mediatorType:Class) {
 		this.view=view;
-		
-		if (mediatorClass) {
-			mediator=injector.injectInto(new mediatorClass) as IMediator;
+
+		if (mediatorType) {
+			mediator=injector.injectInto(new mediatorType) as IMediator;
 			mediator.setView(view);
-			
-			wireDisposer=methodWiring(view, mediator);
-			
+
 			if (view.stage) {
 				mediator.onRegister();
 				view.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStage);
@@ -386,70 +385,21 @@ class MediatorController implements IDisposable {
 			}
 		}
 	}
-	
-	private function methodWiring(view:Object, mediator:Object):IDisposable {
-		var x:XML=describeType(view);
-		var list:XMLList=x..metadata.(@name == "Wire");
-		var variable:XML;
-		var name:String;
-		var disposer:ViewWireDisposer;
-		
-		var f:int=-1;
-		var fmax:int=list.length();
-		
-		if (fmax > 0) {
-			disposer=new ViewWireDisposer;
-			disposer.view=view;
-			
-			while (++f < fmax) {
-				variable=list[f].parent();
-				
-				if (variable.name() == "variable" && variable.@type == "Function") {
-					name=variable.@name;
-					
-					if (mediator[name] !== undefined && typeof mediator[name] === "function") {
-						view[name]=mediator[name];
-						disposer.list.push(name);
-					}
-				}
-			}
-		}
-		
-		return disposer;
-	}
-	
+
 	private function addedToStage(event:Event):void {
 		view.removeEventListener(Event.ADDED_TO_STAGE, addedToStage);
 		mediator.onRegister();
 		view.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStage);
 	}
-	
+
 	private function removedFromStage(event:Event):void {
 		dispose();
 	}
-	
+
 	public function dispose():void {
-		if (wireDisposer) {
-			wireDisposer.dispose();
-		}
 		view.removeEventListener(Event.REMOVED_FROM_STAGE, removedFromStage);
 		mediator.onRemove();
-		wireDisposer=null;
 		mediator=null;
 		view=null;
-	}
-}
-
-class ViewWireDisposer implements IDisposable {
-	public var view:Object;
-	public var list:Vector.<String>=new Vector.<String>;
-	
-	public function dispose():void {
-		var f:int=list.length;
-		while (--f >= 0) {
-			view[list[f]]=null;
-		}
-		view=null;
-		list=null;
 	}
 }

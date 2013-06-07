@@ -4,7 +4,7 @@ import de.polygonal.ds.Itr;
 
 import ssen.common.IDisposable;
 
-public class EvtUnitManager implements IDisposable {
+public class EvtGatherer implements IDisposable {
 	private var map:HashMap;
 	
 	public function add(unit:IEvtUnit):void {

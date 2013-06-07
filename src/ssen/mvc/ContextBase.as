@@ -93,7 +93,7 @@ public class ContextBase implements IContext {
 			return _injector;
 		}
 
-		_injector=parentContext === null ? new ContextInjector : parentContext.injector.createChild();
+		_injector=parentContext === null ? new Injector : parentContext.injector.createChild();
 
 		return _injector;
 	}
@@ -125,7 +125,7 @@ import flash.utils.Dictionary;
 import ssen.common.ds.MultipleKeyDataCollection;
 import ssen.mvc.DispatchTo;
 import ssen.mvc.Evt;
-import ssen.mvc.EvtUnitManager;
+import ssen.mvc.EvtGatherer;
 import ssen.mvc.ICommand;
 import ssen.mvc.ICommandChain;
 import ssen.mvc.ICommandMap;
@@ -136,7 +136,6 @@ import ssen.mvc.IEventBus;
 import ssen.mvc.IEvtDispatcher;
 import ssen.mvc.IEvtUnit;
 import ssen.mvc.IInjector;
-import ssen.mvc.Injector;
 import ssen.mvc.dependent;
 
 use namespace dependent;
@@ -145,13 +144,13 @@ class ImplCommandMap implements ICommandMap {
 	private var dic:Dictionary;
 	private var injector:IInjector;
 	private var dispatcher:IEvtDispatcher;
-	private var evtUnits:EvtUnitManager;
+	private var evtUnits:EvtGatherer;
 
 	public function ImplCommandMap(dispatcher:IEvtDispatcher, injector:IInjector) {
 		this.dispatcher=dispatcher;
 		this.injector=injector;
 		dic=new Dictionary;
-		evtUnits=new EvtUnitManager;
+		evtUnits=new EvtGatherer;
 	}
 
 	public function mapCommand(eventType:String, commandClasses:Vector.<Class>):void {
@@ -262,7 +261,7 @@ class EventBus implements IEventBus {
 	private static var _globalDispatcher:IEvtDispatcher;
 	private var _parent:IEventBus;
 	private var _evtDispatcher:IEvtDispatcher;
-	private var _eventUnits:EvtUnitManager;
+	private var _eventUnits:EvtGatherer;
 
 	public function EventBus(parent:IEventBus=null) {
 		if (_globalDispatcher === null) {
@@ -271,7 +270,7 @@ class EventBus implements IEventBus {
 
 		_evtDispatcher=new EvtDispatcher;
 		_parent=parent;
-		_eventUnits=new EvtUnitManager;
+		_eventUnits=new EvtGatherer;
 
 		if (_parent)
 			_eventUnits.add(_parent.evtDispatcher.addEvtListener(ContextEvent.FROM_PARENT_CONTEXT, catchOutsideEvent));
@@ -386,23 +385,23 @@ class ContextEvent extends Evt {
 //	}
 //}
 
-class ContextInjector extends Injector implements IInjector {
-	public function ContextInjector(parent:ContextInjector=null) {
-		super(parent);
-	}
-
-	override public function createChild():IInjector {
-		return new ContextInjector(this);
-	}
-
-	/** @inheritDoc */
-	override public function registerDependent(target:*):XML {
-		var spec:XML=super.registerDependent(target);
-		return spec;
-	}
-
-
-}
+//class ContextInjector extends Injector implements IInjector {
+//	public function ContextInjector(parent:ContextInjector=null) {
+//		super(parent);
+//	}
+//
+//	override public function createChild():IInjector {
+//		return new ContextInjector(this);
+//	}
+//
+//	/** @inheritDoc */
+//	override public function registerDependent(target:*):XML {
+//		var spec:XML=super.registerDependent(target);
+//		return spec;
+//	}
+//
+//
+//}
 
 //==========================================================================================
 // context view injector
