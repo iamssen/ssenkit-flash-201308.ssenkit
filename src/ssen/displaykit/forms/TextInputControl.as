@@ -1,45 +1,43 @@
-package ssen.displaykit.form {
-import flash.events.Event;
+package ssen.displaykit.forms {
 import flash.events.FocusEvent;
 import flash.events.KeyboardEvent;
 import flash.ui.Keyboard;
 
-import spark.components.NumericStepper;
+import spark.components.TextInput;
+import spark.events.TextOperationEvent;
 
-public class NumericStepperControl extends UIComponentControl {
-	private var component:NumericStepper;
+public class TextInputControl extends UIComponentControl implements FormControl {
+	protected var component:TextInput;
 	
-	public var minimum:int;
-	public var maximum:int;
+	public var restrict:String;
 	public var maxChars:int;
 	
-	public function NumericStepperControl(component:NumericStepper) {
+	public function TextInputControl(component:TextInput) {
 		this.component=component;
 		super(component);
 	}
 	
-	public function get numericStepper():NumericStepper {
+	public function get textInput():TextInput {
 		return component;
 	}
 	
 	override protected function doStart():void {
-		component.minimum=minimum;
-		component.maximum=maximum;
+		component.restrict=restrict;
 		component.maxChars=maxChars;
 		
-		startValueControl();
 		startTypeControl();
+		startValueControl();
 	}
 	
 	override protected function doStop():void {
-		stopValueControl();
 		stopTypeControl();
+		stopValueControl();
 	}
 	
 	override public function dispose():void {
 		if (state !== FormControlState.NONE) {
-			stopValueControl();
 			stopTypeControl();
+			stopValueControl();
 		}
 		
 		super.dispose();
@@ -51,34 +49,32 @@ public class NumericStepperControl extends UIComponentControl {
 	// 
 	//=========================================================
 	private function startValueControl():void {
-		component.addEventListener(Event.CHANGE, indexChange, false, 0, true);
+		component.addEventListener(TextOperationEvent.CHANGE, textChangeForValueControl, false, 0, true);
 	}
 	
 	private function stopValueControl():void {
-		component.removeEventListener(Event.CHANGE, indexChange);
+		component.removeEventListener(TextOperationEvent.CHANGE, textChangeForValueControl);
 	}
 	
-	private function indexChange(event:Event):void {
-		if (!component.focusEnabled && _cache === component.value) {
-			_cache=component.value;
+	private function textChangeForValueControl(event:TextOperationEvent):void {
+		if (!component.focusEnabled && _cache === component.text) {
+			_cache=component.text;
 			dispatchFormValueChange();
 		}
-		
-		dispatchFormValueChange();
 	}
 	
 	override protected function clearValue():void {
-		component.value=0;
-		_cache=0;
+		component.text="";
+		_cache="";
 	}
 	
 	//=========================================================
 	// type control
 	//=========================================================
-	private var _cache:Number;
+	private var _cache:String;
 	
 	private function startTypeControl():void {
-		_cache=component.value;
+		_cache=component.text;
 		
 		component.addEventListener(FocusEvent.FOCUS_OUT, focusOutForTypeControl, false, 0, true);
 		component.addEventListener(KeyboardEvent.KEY_DOWN, keyUpForTypeControl, false, 0, true);
@@ -105,12 +101,14 @@ public class NumericStepperControl extends UIComponentControl {
 	}
 	
 	private function restoreValue():void {
-		component.value=_cache;
+		component.text=_cache;
 	}
 	
 	private function commitValue():void {
-		_cache=component.value;
+		_cache=component.text;
 		dispatchFormValueChange();
 	}
+
+
 }
 }

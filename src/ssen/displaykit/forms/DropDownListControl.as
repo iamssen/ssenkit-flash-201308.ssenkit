@@ -1,4 +1,4 @@
-package ssen.displaykit.form {
+package ssen.displaykit.forms {
 	import flash.events.Event;
 
 	import spark.components.DropDownList;

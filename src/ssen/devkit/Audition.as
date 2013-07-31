@@ -41,9 +41,13 @@ public class Audition {
 
 	private function completePlot():void {
 		if (errors > 0) {
+			trace("---------------------------------------------");
 			trace(StringUtils.formatToString("Audition not pass. {0} errors", errors));
+			trace("---------------------------------------------");
 		} else {
-			trace("Audition are pass.");
+			trace("---------------------------------------------");
+			trace("Pass audition.");
+			trace("---------------------------------------------");
 		}
 	}
 
@@ -121,7 +125,7 @@ class Plot {
 
 		var metadatas:XMLList;
 
-		metadatas=spec..metadata.(@name == "test");
+		metadatas=spec..metadata.(@name.toString().toLowerCase() == "test");
 		if (metadatas.length() === 0) {
 			return false;
 		}
@@ -135,22 +139,22 @@ class Plot {
 			acts[f]=getSingleAct(metadatas[f]);
 		}
 
-		metadatas=spec..metadata.(@name == "before");
+		metadatas=spec..metadata.(@name.toString().toLowerCase() == "before");
 		if (metadatas.length() > 0) {
 			before=getSingleAct(metadatas[0]);
 		}
 
-		metadatas=spec..metadata.(@name == "beforeEach");
+		metadatas=spec..metadata.(@name.toString().toLowerCase() == "beforeeach");
 		if (metadatas.length() > 0) {
 			beforeEach=getSingleAct(metadatas[0]);
 		}
 
-		metadatas=spec..metadata.(@name == "after");
+		metadatas=spec..metadata.(@name.toString().toLowerCase() == "after");
 		if (metadatas.length() > 0) {
 			after=getSingleAct(metadatas[0]);
 		}
 
-		metadatas=spec..metadata.(@name == "afterEach");
+		metadatas=spec..metadata.(@name.toString().toLowerCase() == "aftereach");
 		if (metadatas.length() > 0) {
 			afterEach=getSingleAct(metadatas[0]);
 		}

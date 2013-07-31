@@ -1,4 +1,4 @@
-package ssen.displaykit.form {
+package ssen.displaykit.forms {
 import flash.events.KeyboardEvent;
 import flash.events.MouseEvent;
 import flash.ui.Keyboard;

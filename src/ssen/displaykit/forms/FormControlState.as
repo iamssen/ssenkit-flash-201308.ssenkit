@@ -1,4 +1,4 @@
-package ssen.displaykit.form {
+package ssen.displaykit.forms {
 import ssen.common.StringUtils;
 
 public class FormControlState {

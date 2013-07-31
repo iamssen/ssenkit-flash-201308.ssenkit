@@ -1,4 +1,4 @@
-package ssen.displaykit.form {
+package ssen.displaykit.forms {
 import flash.events.Event;
 import flash.events.EventDispatcher;
 import flash.geom.Rectangle;
@@ -8,8 +8,8 @@ import mx.managers.IFocusManagerComponent;
 
 import ssen.common.StringUtils;
 
-[Event(name="formStateChanged", type="ssen.displaykit.form.FormControlEvent")]
-[Event(name="formValueChanged", type="ssen.displaykit.form.FormControlEvent")]
+[Event(name="formStateChanged", type="ssen.displaykit.forms.FormControlEvent")]
+[Event(name="formValueChanged", type="ssen.displaykit.forms.FormControlEvent")]
 
 public class UIComponentControl extends EventDispatcher implements FormControl {
 	
@@ -419,8 +419,8 @@ public class UIComponentControl extends EventDispatcher implements FormControl {
 	}
 }
 }
-import ssen.displaykit.form.FormControl;
-import ssen.displaykit.form.FormControlEvent;
+import ssen.displaykit.forms.FormControl;
+import ssen.displaykit.forms.FormControlEvent;
 
 class ListenControl {
 	public var control:FormControl;
