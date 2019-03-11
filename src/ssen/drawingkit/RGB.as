@@ -3,7 +3,7 @@ import ssen.common.StringUtils;
 
 public class RGB {
 	//----------------------------------------------------------------
-	// class
+	// properties
 	//----------------------------------------------------------------
 	public var r:int;
 	public var g:int;
@@ -38,6 +38,19 @@ public class RGB {
 
 	public function toString():String {
 		return StringUtils.formatToString('[RGB r="{0}" g="{1}" b="{2}"]', r.toString(16), g.toString(16), b.toString(16));
+	}
+
+	//----------------------------------------------------------------
+	// blend
+	//----------------------------------------------------------------
+	public function multiply(rgb:RGB):RGB {
+		var out:RGB=new RGB;
+
+		out.r=rgb.r * r / 255;
+		out.g=rgb.g * g / 255;
+		out.b=rgb.b * b / 255;
+
+		return out;
 	}
 }
 }

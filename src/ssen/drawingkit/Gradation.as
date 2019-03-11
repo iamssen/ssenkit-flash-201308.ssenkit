@@ -1,8 +1,6 @@
 package ssen.drawingkit {
 import gs.easing.Linear;
 
-
-
 public class Gradation {
 	/**
 	 * rgb 와 rgb 사이의 gradation color 를 뽑는다

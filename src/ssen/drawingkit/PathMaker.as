@@ -1,4 +1,4 @@
-package ssen.displaykit.graphics {
+package ssen.drawingkit {
 import flash.display.GraphicsPath;
 import flash.display.GraphicsTrianglePath;
 import flash.geom.Point;

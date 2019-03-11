@@ -1,7 +1,6 @@
 package ssen.drawingkit {
 import gs.easing.Linear;
 
-
 public class PointMaker {
 
 	/**

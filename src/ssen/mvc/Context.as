@@ -1,14 +1,8 @@
-package ssen.displaykit {
+package ssen.mvc {
 import flash.display.DisplayObjectContainer;
 import flash.events.Event;
 import flash.events.IEventDispatcher;
 
-import ssen.mvc.ContextBase;
-import ssen.mvc.ICallLater;
-import ssen.mvc.IContext;
-import ssen.mvc.IContextView;
-import ssen.mvc.IViewCatcher;
-import ssen.mvc.IViewInjector;
 
 /**
  * @see https://github.com/iamssen/SSenMvcFramework

@@ -1,4 +1,6 @@
 package ssen.drawingkit {
+import flash.geom.Point;
+
 import ssen.common.StringUtils;
 
 public class XY {
@@ -16,6 +18,10 @@ public class XY {
 
 	public function toString():String {
 		return StringUtils.formatToString('[XY x="{0}" y="{1}"]', x, y);
+	}
+
+	public function toPoint():Point {
+		return new Point(x, y);
 	}
 }
 }
